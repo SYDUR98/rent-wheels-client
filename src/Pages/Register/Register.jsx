@@ -4,12 +4,29 @@ import { AuthContext } from '../../provider/AuthContext';
 
 
 const Register = () => {
-  const {setUser,logInWithGoogle} = use(AuthContext)
+  const {setUser,createUser,logInWithGoogle} = use(AuthContext)
   const navigate = useNavigate()
 
     const handleRegister = (e) =>{
       e.preventDefault()
-     
+     const name = e.target.name.value
+     const email = e.target.email.value
+     const photoURL = e.target.photoURL.value
+     const password = e.target.password.value
+     console.log(name,email,photoURL,password)
+
+     createUser(email,password)
+     .then(result=>{
+      console.log(result.user)
+      setUser(result.user)
+     })
+     .then(error=>{
+      console.log(error)
+     })
+
+
+
+
         
     }
     const handleGoogle = () =>{
