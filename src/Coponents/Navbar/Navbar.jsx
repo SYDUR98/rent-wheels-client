@@ -1,7 +1,20 @@
-import React from "react";
+import React, { use } from "react";
 import { Link, NavLink } from "react-router";
+import { AuthContext } from "../../provider/AuthContext";
 
 const Navbar = () => {
+  const { user, logOut } = use(AuthContext);
+
+  const handleSignOut = () => {
+    logOut()
+      .then(() => {
+        console.log("signout successfully");
+      })
+      .then((error) => {
+        console.log(error);
+      });
+  };
+
   const manuLink = (
     <>
       <li>
@@ -86,14 +99,23 @@ const Navbar = () => {
           </ul>
         </div>
         <div className="flex flex-col">
-          <a className="text-2xl font-bold">RENT <span className="text-primary">WHEELS</span></a>
-          <a className=""><span  className="text-primary">Car</span> Rental Platform</a>
+          <a className="text-2xl font-bold">
+            RENT <span className="text-primary">WHEELS</span>
+          </a>
+          <a className="">
+            <span className="text-primary">Car</span> Rental Platform
+          </a>
         </div>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{manuLink}</ul>
       </div>
       <div className="navbar-end"></div>
+      {user ? (
+        <Link onClick={handleSignOut}>SignOut</Link>
+      ) : (
+        <Link to={"/login"}>SignIn</Link>
+      )}
     </div>
   );
 };

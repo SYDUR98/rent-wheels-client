@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router';
 import { AuthContext } from '../../provider/AuthContext';
 
 const Login = () => {
-    const { setUser,logInWithGoogle} = use(AuthContext)
+    const { setUser,logInWithGoogle,logInWithEmailPass} = use(AuthContext)
     const navigate = useNavigate()
 
 
@@ -19,8 +19,17 @@ const Login = () => {
         console.log(error)
       })
     }
-    const handleLogin =()=>{
-
+    const handleLogin =(e)=>{
+      e.preventDefault()
+      const name = e.target.email.value
+      const email = e.target.password.value
+      logInWithEmailPass(name,email)
+      .then(result=>{
+        console.log(result.user)
+      })
+      .then(error=>{
+        console.log(error)
+      })
     }
     
 
