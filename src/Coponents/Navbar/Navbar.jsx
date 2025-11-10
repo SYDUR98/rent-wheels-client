@@ -1,4 +1,4 @@
-import React, { use, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { Link, NavLink } from "react-router";
 import { AuthContext } from "../../provider/AuthContext";
 import { FaUser } from "react-icons/fa";
@@ -6,6 +6,9 @@ import { FaUser } from "react-icons/fa";
 const Navbar = () => {
   const { user, logOut } = use(AuthContext);
   const [open, setOpen] = useState(false);
+  useEffect(() => {
+  setOpen(false);
+}, [user]);
 
   const handleSignOut = () => {
     logOut()
@@ -168,10 +171,10 @@ const Navbar = () => {
           <div className="relative">
            
             <img
-              src={user?.photoURL}
+              src={user?.photoURL || "https://i.ibb.co/4pDNDk1/avatar.png"}
               alt="User"
               onClick={() => setOpen(!open)}
-              className="w-10 h-10 rounded-full cursor-pointer border-2 border-primary"
+              className="w-15 h-7 rounded-full object-cover"
             />
 
             {/* click open dropdowan optin */}
@@ -190,14 +193,14 @@ const Navbar = () => {
             )}
           </div>
         ) : (
-          <li>
+          
             <Link
               to="/login"
               className="px-4 py-2 bg-primary text-white rounded-md"
             >
               Login
             </Link>
-          </li>
+         
         )}
 
 

@@ -8,17 +8,35 @@ const Login = () => {
     const navigate = useNavigate()
 
 
-     const handleGoogle = () =>{
+    const handleGoogle = () =>{
       logInWithGoogle()
       .then(result=>{
         console.log(result.user)
         setUser(result.user)
-        navigate('/')
-      })
+          const newUser = {
+            name: result.user.displayName,
+            email: result.user.email,
+            image: result.user.photoURL
+          }
+       // create user in database 
+          fetch('http://localhost:3000/users',{
+            method:'POST',
+            headers:{
+              'content-type':'application/json'
+            },
+            body: JSON.stringify(newUser)
+          })
+          .then(res=>res.json())
+          .then(data =>{
+            console.log(data)
+          })
+          navigate('/')
+     })
       .then(error=>{
         console.log(error)
       })
     }
+
     const handleLogin =(e)=>{
       e.preventDefault()
       const name = e.target.email.value
@@ -27,7 +45,6 @@ const Login = () => {
       .then(result=>{
         console.log(result.user)
         setUser(result.user)
-        navigate('/')
       })
       .then(error=>{
         console.log(error)
