@@ -10,6 +10,8 @@ const Navbar = () => {
   setOpen(false);
 }, [user]);
 
+// console.log(user?.accessToken)
+
   const handleSignOut = () => {
     logOut()
       .then(() => {
