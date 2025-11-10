@@ -26,6 +26,8 @@ const Login = () => {
       logInWithEmailPass(name,email)
       .then(result=>{
         console.log(result.user)
+        setUser(result.user)
+        navigate('/')
       })
       .then(error=>{
         console.log(error)

@@ -19,6 +19,7 @@ const Register = () => {
      .then(result=>{
       console.log(result.user)
       setUser(result.user)
+       navigate('/')
      })
      .then(error=>{
       console.log(error)

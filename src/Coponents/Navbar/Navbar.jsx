@@ -42,7 +42,51 @@ const Navbar = () => {
           BROWSE CARS
         </NavLink>
       </li>
-
+{
+        user && 
+        <>
+          <li>
+        <NavLink
+          to="/addcar"
+          className={({ isActive }) =>
+            `px-4 py-2 rounded-md font-medium transition-colors duration-300 ${
+              isActive ? " text-primary" : "hover:text-primary "
+            }`
+          }
+        >
+          ADD A CAR
+        </NavLink>
+      </li>
+        <li>
+        <NavLink
+          to="/mylisting"
+          className={({ isActive }) =>
+            `px-4 py-2 rounded-md font-medium transition-colors duration-300 ${
+              isActive ? " text-primary" : "hover:text-primary "
+            }`
+          }
+        >
+          MY LISTINGS
+        </NavLink>
+      </li>
+        <li>
+        <NavLink
+          to="/mybookings"
+          className={({ isActive }) =>
+            `px-4 py-2 rounded-md font-medium transition-colors duration-300 ${
+              isActive ? " text-primary" : "hover:text-primary "
+            }`
+          }
+        >
+          MY BOOKINGS
+        </NavLink>
+      </li>
+        
+      
+        </>
+      }
+     {
+       !user && <>
       <li>
         <NavLink
           to="/register"
@@ -68,6 +112,11 @@ const Navbar = () => {
           LOGIN
         </NavLink>
       </li>
+      
+      </>
+     }
+
+      
     </>
   );
   return (
