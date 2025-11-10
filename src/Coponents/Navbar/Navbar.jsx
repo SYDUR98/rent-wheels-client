@@ -1,9 +1,11 @@
-import React, { use } from "react";
+import React, { use, useState } from "react";
 import { Link, NavLink } from "react-router";
 import { AuthContext } from "../../provider/AuthContext";
+import { FaUser } from "react-icons/fa";
 
 const Navbar = () => {
   const { user, logOut } = use(AuthContext);
+  const [open, setOpen] = useState(false);
 
   const handleSignOut = () => {
     logOut()
@@ -160,11 +162,46 @@ const Navbar = () => {
         <ul className="menu menu-horizontal px-1">{manuLink}</ul>
       </div>
       <div className="navbar-end"></div>
-      {user ? (
-        <Link onClick={handleSignOut}>SignOut</Link>
-      ) : (
-        <Link to={"/login"}>SignIn</Link>
-      )}
+      
+      {/* user functionality  */}
+        {user ? (
+          <div className="relative">
+           
+            <img
+              src={user?.photoURL}
+              alt="User"
+              onClick={() => setOpen(!open)}
+              className="w-10 h-10 rounded-full cursor-pointer border-2 border-primary"
+            />
+
+            {/* click open dropdowan optin */}
+            {open && (
+              <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg p-3 text-sm z-10">
+                <p className="font-semibold">{user.displayName || "No Name"}</p>
+                <p className="text-gray-500">{user.email}</p>
+                <hr className="my-2" />
+                <button
+                  onClick={handleSignOut}
+                  className="w-full text-left text-red-600 hover:underline"
+                >
+                  Log Out
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <li>
+            <Link
+              to="/login"
+              className="px-4 py-2 bg-primary text-white rounded-md"
+            >
+              Login
+            </Link>
+          </li>
+        )}
+
+
+
     </div>
   );
 };
