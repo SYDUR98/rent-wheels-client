@@ -62,6 +62,7 @@ export const router = createBrowserRouter([
          fetch(`http://localhost:3000/cars/${params.id}`),
         element: <CarDetails></CarDetails>
       },
+     
     ],
   },
 ]);

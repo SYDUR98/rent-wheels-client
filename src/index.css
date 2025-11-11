@@ -8,14 +8,19 @@
   name: "light";
   default: true;
   --color-primary: #4D9ED0;
+   --color-primary-content:    ;   /* heighlight and primary button  */
+  /*--color-secondary: #ffffff;      /*white*/
+   --color-secondary-content:#FCB700   ;  /*  heighlight and primary button bg 2  */
   --color-accent : #898989;
+  --color-black: #000000;
+  --color-white: #ffffff;
     
   --color-base-200: #6B7280  ;    /* cards bg gray -500  */
   --color-base-300: #4B5563  ;    /* cards bg gray -600  */
   /* --color-base-300: #EEEEEE;  ;     */
-  /* --color-base-content:   ;    all page text bg  */
-  /* --color-primary-content:   ;    heighlight and primary button  */
-  /* --color-secondary-content:   ;    heighlight and primary button bg 2  */
+     /*all page text bg  */
+  
+  
   --color-success-content: #008000  ;    /* succes alert or toast  */
   --color-warning-content: #FF0000  ;    /* mistack or warnning  */
  

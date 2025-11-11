@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-import { useLoaderData,} from "react-router";
+import { Link, useLoaderData,} from "react-router";
 
 const CarDetails = () => {
   const car = useLoaderData()
@@ -40,7 +40,7 @@ const CarDetails = () => {
       <div className="mt-6 space-y-3">
         <h3 className="text-xl font-semibold border-b pb-2 ">Car Specifications</h3>
         
-        <p className="text-lg"><strong>Category:</strong> <span className="text-gray-700">{category}</span></p>
+        <p className="text-lg"><strong>Category:</strong> <span className="text-base-300">{category}</span></p>
         
         <p className="text-lg">
           <strong>Rent Price:</strong> 
@@ -64,20 +64,14 @@ const CarDetails = () => {
 
       {/*  Buttons */}
       <div className="mt-8 flex gap-4">
-        {/* Book Now Button - BACKGROUND: bg-primary */}
-        <button
-          onClick={() => console.log(`Attempting to book ${carName}`)}
-          className="flex-1 px-6 py-3 text-white font-semibold rounded-lg transition duration-200 hover:opacity-90 bg-primary"
+        {/* Book Now Button */}
+        
+        <Link
+          className="flex-1 btn btn-primary  px-6 py-3 text-white font-semibold rounded-lg transition duration-200 hover:opacity-90 bg-primary"
         >
           Book Now
-        </button>
-
-        <button
-          onClick={() => console.log(`Navigating to listings by ${providerName}`)}
-          className="flex-1 px-6 py-3 font-semibold rounded-lg border-2 border-primary transition duration-200 hover:bg-gray-100  text-accent"
-        >
-          View Provider's Listings
-        </button>
+        </Link>
+        
       </div>
     </div>
   );
