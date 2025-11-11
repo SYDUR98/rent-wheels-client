@@ -63,7 +63,7 @@ const CarDetails = () => {
       </div>
 
       {/*  Buttons */}
-      <div className="mt-8 flex gap-4">
+      <div className="mt-8 flex">
         {/* Book Now Button */}
         
         <Link
