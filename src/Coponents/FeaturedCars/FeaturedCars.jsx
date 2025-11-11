@@ -20,10 +20,10 @@ const FeaturedCars = () => {
           <div className="p-4">
             <h3 className="text-lg font-bold">{car.carName}</h3>
             <p className="text-gray-600">{car.category}</p>
-            <p className="text-blue-600 font-semibold">${car.rentPrice} / day</p>
+            <p className="text-primary font-semibold">${car.rentPrice} / day</p>
             <p className="text-gray-500">Provider: {car.providerName}</p>
             <Link
-              to={`/car/${car._id}`} 
+              to={`/cars/${car._id}`} 
               className="mt-2 inline-block px-4 py-2 bg-[#4D9ED0] text-white rounded hover:bg-[#357ABD]"
             >
               View Details

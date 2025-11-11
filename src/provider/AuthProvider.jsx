@@ -50,7 +50,7 @@ const AuthProvider = ({children}) => {
     return (
         <div>
             <AuthContext value={authInfo}>
-                {children}
+                 {loading ? <p className="text-center mt-10">Loading</p> : children}
             </AuthContext>
         </div>
     );
