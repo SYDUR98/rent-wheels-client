@@ -69,9 +69,9 @@ const FeaturedCars = () => {
 
             <div className="p-4">
               <h3 className="text-lg font-bold">{car.carName}</h3>
-              <p className="text-gray-400">{car.category}</p>
+              <p className="text-base-200">{car.category}</p>
               <p className="font-semibold">${car.rentPrice} / day</p>
-              <p className="text-gray-500">Provider: {car.providerName}</p>
+              <p className="text-base-300">Provider: {car.providerName}</p>
 
               <div className="mt-4 flex gap-4">
                 <button
@@ -79,7 +79,7 @@ const FeaturedCars = () => {
                   disabled={car.status === "Booked"}
                   className={`flex-1 btn px-4 py-2 text-white font-semibold rounded-lg transition duration-200 ${
                     car.status === "Booked"
-                      ? "bg-gray-400 cursor-not-allowed"
+                      ? "bg-base-200 cursor-not-allowed"
                       : "bg-primary hover:opacity-90"
                   }`}
                 >
