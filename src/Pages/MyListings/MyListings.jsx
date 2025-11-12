@@ -9,6 +9,15 @@ const MyListings = () => {
   const {user} = use(AuthContext)
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCar, setSelectedCar] = useState(null);
+  const [formData, setFormData] = useState({
+    carName: "",
+    category: "",
+    rentPrice: "",
+    status: "",
+  });
+
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     if (!user?.email) return;
@@ -58,6 +67,55 @@ const MyListings = () => {
     });
   };
 
+   //Modal open function
+  const openModal = (car) => {
+    setSelectedCar(car);
+    setFormData({
+      carName: car.carName,
+      category: car.category,
+      rentPrice: car.rentPrice,
+      status: car.status,
+    });
+    setModalOpen(true);
+  };
+
+  // Handle input change
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // update functionality 
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    fetch(`http://localhost:3000/cars/${selectedCar._id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.modifiedCount > 0) {
+          Swal.fire({
+            icon: "success",
+            title: "Updated!",
+            text: `${formData.carName} has been updated.`,
+            timer: 2000,
+            showConfirmButton: false,
+          });
+
+          setListings(
+            listings.map((car) =>
+              car._id === selectedCar._id ? { ...car, ...formData } : car
+            )
+          );
+          setModalOpen(false);
+        }
+      })
+      .catch((err) => console.error(err));
+  };
+
+
   if (loading) return <p className="text-center mt-10">Loading...</p>;
 
   return (
@@ -86,7 +144,7 @@ const MyListings = () => {
                   <td className="px-4 py-2">${car.rentPrice}</td>
                   <td className="px-4 py-2">
                     <span
-                      className={`px-3 py-2 rounded-full text-white ${
+                      className={`px-2 py-1 rounded-full text-white ${
                         car.status === "Available" ? "bg-success-content" : "bg-warning-content"
                       }`}
                     >
@@ -101,7 +159,7 @@ const MyListings = () => {
                       Delete
                     </button>
                     <button
-                     
+                      onClick={() => openModal(car)}
                       className="btn bg-primary hover:bg-primary-content text-primary-content btn-sm"
                     >
                       Update
@@ -111,6 +169,67 @@ const MyListings = () => {
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {modalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg w-96 relative">
+            <h3 className="text-lg font-bold mb-4 text-primary">
+              Update Car Info
+            </h3>
+            <form onSubmit={handleUpdate} className="space-y-3">
+              <input
+                type="text"
+                name="carName"
+                value={formData.carName}
+                onChange={handleChange}
+                className="input input-bordered w-full"
+                placeholder="Car Name"
+                required
+              />
+              <input
+                type="text"
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                className="input input-bordered w-full"
+                placeholder="Category"
+                required
+              />
+              <input
+                type="number"
+                name="rentPrice"
+                value={formData.rentPrice}
+                onChange={handleChange}
+                className="input input-bordered w-full"
+                placeholder="Rent Price"
+                required
+              />
+              <select
+                name="status"
+                value={formData.status}
+                onChange={handleChange}
+                className="select select-bordered w-full"
+              >
+                <option value="Available">Available</option>
+                <option value="Booked">Booked</option>
+              </select>
+
+              <div className="flex justify-end gap-3 mt-4">
+                <button
+                  type="button"
+                  onClick={() => setModalOpen(false)}
+                  className="btn btn-outline"
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="btn btn-primary text-white">
+                  Update
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>
