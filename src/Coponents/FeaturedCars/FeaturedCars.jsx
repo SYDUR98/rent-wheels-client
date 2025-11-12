@@ -2,6 +2,7 @@ import { use, useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router";
 import { AuthContext } from "../../provider/AuthContext";
+import { Tooltip } from "react-tooltip";
 
 const FeaturedCars = () => {
   const { user } = use(AuthContext);
@@ -64,8 +65,13 @@ const FeaturedCars = () => {
             <img
               src={car.image}
               alt={car.carName}
-              className="w-full h-48 object-cover"
+              className="w-full h-48 object-cover cursor-pointer transition-transform duration-300 hover:scale-105"
+              data-tooltip-id={`car-${car._id}`}
+              data-tooltip-content={`${car.carName} | $${car.rentPrice} / day | ${car.status} `}
             />
+
+            {/* Tooltip */}
+            <Tooltip id={`car-${car._id}`} place="top" effect="solid" />
 
             <div className="p-4">
               <h3 className="text-lg font-bold">{car.carName}</h3>
