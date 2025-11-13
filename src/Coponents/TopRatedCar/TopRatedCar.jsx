@@ -12,7 +12,7 @@ const TopRatedCar = () => {
         {/* Car 1 */}
         <div className="p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 bg-primary/10">
           <img
-            src="https://i.ibb.co/xKtVSfL2/rsz-b1.jpg"
+            src="https://i.ibb.co.com/xq9FKmPg/c5.webp"
             alt="Car 1"
             className="w-full h-48 object-cover rounded mb-4"
           />
@@ -31,7 +31,7 @@ const TopRatedCar = () => {
         {/* Car 2 */}
         <div className="p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 bg-primary/10">
           <img
-            src="https://i.ibb.co/7dy5xRdS/rsz-b3.jpg"
+            src="https://i.ibb.co.com/Dg5H0Gsz/c3.webp"
             alt="Car 2"
             className="w-full h-48 object-cover rounded mb-4"
           />
@@ -50,7 +50,7 @@ const TopRatedCar = () => {
         {/* Car 3 */}
         <div className="p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 bg-primary/10">
           <img
-            src="https://i.ibb.co/XZ0TCPMg/b4.jpg"
+            src="https://i.ibb.co.com/DPjXJngx/c2.webp"
             alt="Car 3"
             className="w-full h-48 object-cover rounded mb-4"
           />
