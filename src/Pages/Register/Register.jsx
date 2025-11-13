@@ -1,25 +1,23 @@
 import React, { use, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../../provider/AuthContext";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { FaEye, FaRegEyeSlash } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const Register = () => {
   const { setUser, createUser, logInWithGoogle, updateUser } = use(AuthContext);
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [acceptedTerms, setAcceptedTerms] = useState(false);
-   const [showPassword, setShowPassword] = useState(false);
-
-
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleToggleButton = (e) => {
     e.preventDefault();
     setShowPassword(!showPassword);
   };
 
-
-    const handleRegister = (e) => {
+  const handleRegister = (e) => {
     e.preventDefault();
     setError("");
 
@@ -52,6 +50,14 @@ const Register = () => {
       .then((result) => {
         const user = result.user;
         toast.success("Welcome! Your registration was successful");
+        Swal.fire({
+          title: "Registration Successful!",
+          text: "Welcome to Rent Wheels",
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+        navigate("/");
         // Update Firebase profile
         updateUser({
           displayName: name,
@@ -82,7 +88,6 @@ const Register = () => {
               .then((res) => res.json())
               .then((data) => {
                 console.log("User saved:", data);
-                navigate("/");
               });
           })
           .catch((err) => setError(err.message));
@@ -93,35 +98,37 @@ const Register = () => {
       });
   };
 
- const handleGoogle = () =>{
-      logInWithGoogle()
-      .then(result=>{
-        console.log(result.user)
+  const handleGoogle = () => {
+    logInWithGoogle()
+      .then((result) => {
+        console.log(result.user);
         toast.success("Welcome! Your login was successful");
-        setUser(result.user)
-          const newUser = {
-            name: result.user.displayName,
-            email: result.user.email,
-            image: result.user.photoURL
-          }
-       // create user in database 
-          fetch('http://localhost:3000/users',{
-            method:'POST',
-            headers:{
-              'content-type':'application/json'
-            },
-            body: JSON.stringify(newUser)
-          })
-          .then(res=>res.json())
-          .then(data =>{
-            console.log(data)
-          })
-          navigate('/')
-     })
-      .then(error=>{
-        console.log(error)
+       
+        setUser(result.user);
+        const newUser = {
+          name: result.user.displayName,
+          email: result.user.email,
+          image: result.user.photoURL,
+        };
+        // create user in database
+        fetch("http://localhost:3000/users", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(newUser),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+          });
+        navigate("/");
       })
-    }
+      .catch((error) => {
+        console.log(error);
+       
+      });
+  };
 
   return (
     <div className="hero bg-base-200 min-h-screen">
@@ -161,36 +168,38 @@ const Register = () => {
               <label className="label">Password</label>
               <div className="relative">
                 <input
-               type={showPassword ? "text" : "password"}
-                name="password"
-                className="input"
-                placeholder="Enter Your Password"
-                required
-              />
-              <button
-                onClick={handleToggleButton}
-                className="btn btn-xs absolute top-2 right-5 z-10 "
-              >
-                
-                {showPassword ? <FaRegEyeSlash /> : <FaEye />}
-              </button>
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  className="input"
+                  placeholder="Enter Your Password"
+                  required
+                />
+                <button
+                  onClick={handleToggleButton}
+                  className="btn btn-xs absolute top-2 right-5 z-10 "
+                >
+                  {showPassword ? <FaEye /> : <FaRegEyeSlash />}
+                </button>
               </div>
               {error && <p className="text-red-500 text-sm">{error}</p>}
-               {/* Terms and conditiosn */}
-          <div className="flex items-center gap-2 mt-2">
-            <input
-              type="checkbox"
-              className="checkbox checkbox-sm"
-              onChange={(e) => setAcceptedTerms(e.target.checked)}
-            />
-            <label className="text-sm text-gray-700">
-              Accept <span className="font-semibold">Terms & Conditions</span>
-            </label>
-          </div>
+              {/* Terms and conditiosn */}
+              <div className="flex items-center gap-2 mt-2">
+                <input
+                  type="checkbox"
+                  className="checkbox checkbox-sm"
+                  onChange={(e) => setAcceptedTerms(e.target.checked)}
+                />
+                <label className="text-sm text-gray-700">
+                  Accept{" "}
+                  <span className="font-semibold">Terms & Conditions</span>
+                </label>
+              </div>
               <div>
                 <a className="link link-hover">Forgot password?</a>
               </div>
-              <button className="btn bg-primary/90 text-black/90 hover:bg-primary hover:text-black transition duration-200 mt-4">Register</button>
+              <button className="btn bg-primary/90 text-black/90 hover:bg-primary hover:text-black transition duration-200 mt-4">
+                Register
+              </button>
             </fieldset>
           </form>
           <button
@@ -226,7 +235,6 @@ const Register = () => {
             </svg>
             Login with Google
           </button>
-           <ToastContainer />
         </div>
       </div>
     </div>

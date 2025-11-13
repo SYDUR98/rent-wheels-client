@@ -2,7 +2,7 @@ import { use, useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router";
 import { AuthContext } from "../../provider/AuthContext";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { Tooltip } from "react-tooltip";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
@@ -22,7 +22,7 @@ const FeaturedCars = () => {
       .catch((err) => console.error(err));
      
   }, []);
-  
+
   if(loading){
       return <LoadingSpinner></LoadingSpinner>
       }
@@ -127,7 +127,6 @@ const FeaturedCars = () => {
           Show All
         </Link>
       </div>
-       <ToastContainer />
     </div>
   );
 };

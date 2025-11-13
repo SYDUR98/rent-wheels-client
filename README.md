@@ -1,6 +1,17 @@
 # RentWheels — Car Rental Platform
 
-**Live Site:** [https://your-client-site.netlify.app](https://your-client-site.netlify.app)
+**Live Site:** 
+[Frontend:
+
+Repository Link: https://github.com/SYDUR98/rent-wheels-client 
+Live Deploy Link: https://rent-wheels-app.web.app/
+
+
+Backend:
+
+Repository Link: https://github.com/SYDUR98/Rent-Wheels-server
+Live Deploy Link: http://localhost:3000/]
+
 
 
 ## Project Overview

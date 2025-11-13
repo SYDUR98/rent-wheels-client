@@ -1,6 +1,7 @@
 import React, { use, useEffect, useState } from "react";
 import { Link, NavLink } from "react-router";
 import { AuthContext } from "../../provider/AuthContext";
+import { toast } from "react-toastify";
 import { FaUser } from "react-icons/fa";
 
 const Navbar = () => {
@@ -15,7 +16,8 @@ const Navbar = () => {
   const handleSignOut = () => {
     logOut()
       .then(() => {
-        console.log("signout successfully");
+        // console.log("signout successfully");
+         toast.success("Logout successful");
       })
       .then((error) => {
         console.log(error);

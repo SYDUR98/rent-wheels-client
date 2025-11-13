@@ -12,6 +12,7 @@ import PrivateRoute from "../provider/PrivateRoute";
 import CarDetails from "../Pages/CarDetails";
 import ErrorPage from "../Coponents/ErrorPage/ErrorPage";
 
+
 export const router = createBrowserRouter([
   {
     path: "/",

@@ -1,5 +1,5 @@
 import React, { use, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../../provider/AuthContext";
 import { FaEye, FaRegEyeSlash } from "react-icons/fa";
@@ -153,7 +153,6 @@ const Login = () => {
             </svg>
             Login with Google
           </button>
-          <ToastContainer />
         </div>
       </div>
     </div>
