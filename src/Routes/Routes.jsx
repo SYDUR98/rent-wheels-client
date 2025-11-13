@@ -10,11 +10,13 @@ import MyListings from "../Pages/MyListings/MyListings";
 import MyBookings from "../Pages/MyBookings/MyBookings";
 import PrivateRoute from "../provider/PrivateRoute";
 import CarDetails from "../Pages/CarDetails";
+import ErrorPage from "../Coponents/ErrorPage/ErrorPage";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout></RootLayout>,
+    errorElement:<ErrorPage></ErrorPage>,
     children: [
       {
         index: true,

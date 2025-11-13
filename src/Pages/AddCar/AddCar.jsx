@@ -35,7 +35,7 @@ const AddCar = () => {
         body: JSON.stringify(newCar),
       });
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
 
       Swal.fire({
         icon: "success",
@@ -65,7 +65,7 @@ const AddCar = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mt-6">
+    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mt-6 ">
       <h2 className="text-2xl font-bold mb-4 text-[#4D9ED0]">Add New Car</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Car Name */}

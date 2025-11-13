@@ -2,18 +2,30 @@ import { use, useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router";
 import { AuthContext } from "../../provider/AuthContext";
+import { ToastContainer, toast } from "react-toastify";
 import { Tooltip } from "react-tooltip";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const FeaturedCars = () => {
-  const { user } = use(AuthContext);
+  const { user} = use(AuthContext);
   const [cars, setCars] = useState([]);
-
+  const [loading, setLoading] = useState(true);
+  
   useEffect(() => {
+    
     axios
       .get("http://localhost:3000/cars")
-      .then((res) => setCars(res.data))
+      .then((res) => {
+        setCars(res.data)
+         setLoading(false)
+      })
       .catch((err) => console.error(err));
+     
   }, []);
+  
+  if(loading){
+      return <LoadingSpinner></LoadingSpinner>
+      }
 
   const handleBookNow = async (car) => {
     if (!user) return alert("Please login first");
@@ -36,6 +48,7 @@ const FeaturedCars = () => {
       setCars(
         cars.map((c) => (c._id === car._id ? { ...c, status: "Booked" } : c))
       );
+      toast.success("Booking successful");
     } catch (err) {
       console.error(err);
       alert("Failed to book car");
@@ -44,6 +57,9 @@ const FeaturedCars = () => {
 
   return (
     <div>
+       <h2 className="text-4xl font-bold text-center  text-primary mt-12">
+        Newest Cars
+      </h2>
       <div className="px-6 md:px-20 py-6 grid grid-cols-1 md:grid-cols-3 gap-6">
         {cars.map((car) => (
           <div
@@ -111,6 +127,7 @@ const FeaturedCars = () => {
           Show All
         </Link>
       </div>
+       <ToastContainer />
     </div>
   );
 };

@@ -1,113 +1,163 @@
-import React, { use } from 'react';
-
-import { Link, useNavigate } from 'react-router';
-import { AuthContext } from '../../provider/AuthContext';
+import React, { use, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import { Link, useLocation, useNavigate } from "react-router";
+import { AuthContext } from "../../provider/AuthContext";
+import { FaEye, FaRegEyeSlash } from "react-icons/fa";
 
 const Login = () => {
-    const { setUser,logInWithGoogle,logInWithEmailPass} = use(AuthContext)
-    const navigate = useNavigate()
+  const { setUser, logInWithGoogle, logInWithEmailPass } = use(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [loginSuccess, setLoginSuccess] = useState(true);
+   const [showPassword, setShowPassword] = useState(false);
+  // const [error, setError] = useState("");
 
+  const handleToggleButton = (e) => {
+    e.preventDefault();
+    setShowPassword(!showPassword);
+  };
 
-    const handleGoogle = () =>{
-      logInWithGoogle()
-      .then(result=>{
-        console.log(result.user)
-        setUser(result.user)
-          const newUser = {
-            name: result.user.displayName,
-            email: result.user.email,
-            image: result.user.photoURL
-          }
-       // create user in database 
-          fetch('http://localhost:3000/users',{
-            method:'POST',
-            headers:{
-              'content-type':'application/json'
-            },
-            body: JSON.stringify(newUser)
-          })
-          .then(res=>res.json())
-          .then(data =>{
-            console.log(data)
-          })
-          navigate('/')
-     })
-      .then(error=>{
-        console.log(error)
+  const handleGoogle = () => {
+    logInWithGoogle()
+      .then((result) => {
+        console.log(result.user);
+        toast.success("Welcome! Your login was successful");
+        setUser(result.user);
+        const newUser = {
+          name: result.user.displayName,
+          email: result.user.email,
+          image: result.user.photoURL,
+        };
+        // create user in database
+        fetch("http://localhost:3000/users", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(newUser),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+          });
+        navigate("/");
       })
-    }
+      .then((error) => {
+        console.log(error);
+      });
+  };
 
-    const handleLogin =(e)=>{
-      e.preventDefault()
-      const name = e.target.email.value
-      const email = e.target.password.value
-      logInWithEmailPass(name,email)
-      .then(result=>{
-        console.log(result.user)
-        setUser(result.user)
+  const handleLogin = (e) => {
+    e.preventDefault();
+    // setError("");
+    setLoginSuccess(true)
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+   
+    logInWithEmailPass(email, password)
+      .then((result) => {
+        console.log(result.user);
+        setUser(result.user);
+        toast.success("Welcome! Your login was successful");
+        setLoginSuccess(true); // success = true
+        navigate(`${location.state ? location.state : "/"}`);
       })
-      .then(error=>{
-        console.log(error)
-      })
-    }
-    
+      .catch((error) => {
+        console.log(error);
+        toast.error("Invalid email or password");
+        setLoginSuccess(false); // failed = false
+        // setError(error.message);
+      });
+  };
 
-    return (
-       <div className="hero bg-base-200 min-h-screen">
+  return (
+    <div className="hero bg-base-200 min-h-screen">
       <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
         <div className="card-body">
           <h1 className="text-4xl font-bold">Login now!</h1>
-           <p>New user? <Link to={'/register'}><span className="text-blue-500 underline">Login Now</span></Link></p>
+          <p>
+            New user?{" "}
+            <Link to={"/register"}>
+              <span className="text-blue-500 underline">Register Now</span>
+            </Link>
+          </p>
           <form onSubmit={handleLogin}>
             <fieldset className="fieldset">
-            <label className="label">Email</label>
-            <input type="email" name="email" className="input" placeholder="Email" />
-            <label className="label">Password</label>
-            <input type="password" name="password" className="input" placeholder="Password" />
-            <div>
-              <a className="link link-hover">Forgot password?</a>
-            </div>
-            <button className="btn btn-neutral mt-4">Login</button>
-          </fieldset>
+              <label className="label">Email</label>
+              <input
+                type="email"
+                name="email"
+                className="input"
+                placeholder="Email"
+                required
+              />
+              <label className="label">Password</label>
+              <div className="relative">
+                <input
+                 type={showPassword ? "text" : "password"}
+                name="password"
+                className="input"
+                placeholder="Password"
+                required
+              />
+               <button
+                onClick={handleToggleButton}
+                className="btn btn-xs absolute top-2 right-5 z-10 "
+              >
+                
+                {showPassword ? <FaRegEyeSlash /> : <FaEye />}
+              </button>
+              </div>
+
+             
+              {!loginSuccess && (
+              <p className="text-warning-content text-sm">Invalid email or password</p>
+                )}
+              {/* forgate pass  */}
+              <div>
+                <a className="link link-hover">Forgot password?</a>
+              </div>
+              <button className="btn bg-primary/90 text-black/90 hover:bg-primary hover:text-black transition duration-200 mt-4">Login</button>
+            </fieldset>
           </form>
-          <button 
-          onClick={handleGoogle}
-          className="btn bg-white text-black border-[#e5e5e5]">
-        <svg
-          aria-label="Google logo"
-          width="16"
-          height="16"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 512 512"
-        >
-          <g>
-            <path d="m0 0H512V512H0" fill="#fff"></path>
-            <path
-              fill="#34a853"
-              d="M153 292c30 82 118 95 171 60h62v48A192 192 0 0190 341"
-            ></path>
-            <path
-              fill="#4285f4"
-              d="m386 400a140 175 0 0053-179H260v74h102q-7 37-38 57"
-            ></path>
-            <path
-              fill="#fbbc02"
-              d="m90 341a208 200 0 010-171l63 49q-12 37 0 73"
-            ></path>
-            <path
-              fill="#ea4335"
-              d="m153 219c22-69 116-109 179-50l55-54c-78-75-230-72-297 55"
-            ></path>
-          </g>
-        </svg>
-        Login with Google
-      </button>
-     
+          <button
+            onClick={handleGoogle}
+            className="btn btn-outline btn-info text-black hover:bg-primary/10"
+          >
+            <svg
+              aria-label="Google logo"
+              width="16"
+              height="16"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+            >
+              <g>
+                <path d="m0 0H512V512H0" fill="#fff"></path>
+                <path
+                  fill="#34a853"
+                  d="M153 292c30 82 118 95 171 60h62v48A192 192 0 0190 341"
+                ></path>
+                <path
+                  fill="#4285f4"
+                  d="m386 400a140 175 0 0053-179H260v74h102q-7 37-38 57"
+                ></path>
+                <path
+                  fill="#fbbc02"
+                  d="m90 341a208 200 0 010-171l63 49q-12 37 0 73"
+                ></path>
+                <path
+                  fill="#ea4335"
+                  d="m153 219c22-69 116-109 179-50l55-54c-78-75-230-72-297 55"
+                ></path>
+              </g>
+            </svg>
+            Login with Google
+          </button>
+          <ToastContainer />
         </div>
       </div>
-      
     </div>
-    );
+  );
 };
 
 export default Login;

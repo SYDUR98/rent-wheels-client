@@ -3,17 +3,27 @@ import axios from "axios";
 import { AuthContext } from "../../provider/AuthContext";
 import { Link } from "react-router";
 import { Tooltip } from "react-tooltip";
+import { ToastContainer, toast } from "react-toastify";
+import LoadingSpinner from "../../Coponents/LoadingSpinner/LoadingSpinner";
 
 const BrowseCars = () => {
   const { user } = useContext(AuthContext);
   const [cars, setCars] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios
       .get("http://localhost:3000/browsecar")
-      .then((res) => setCars(res.data))
+      .then((res) => {
+        setCars(res.data)
+        setLoading(false)
+      })
       .catch((err) => console.error(err));
   }, []);
+
+   if(loading){
+      return <LoadingSpinner></LoadingSpinner>
+      }
 
   const handleBookNow = async (car) => {
     if (!user) return alert("Please login first");
@@ -36,6 +46,7 @@ const BrowseCars = () => {
       setCars(
         cars.map((c) => (c._id === car._id ? { ...c, status: "Booked" } : c))
       );
+      toast.success("Booking successful");
     } catch (err) {
       console.error(err);
       alert("Failed to book car");
@@ -45,7 +56,11 @@ const BrowseCars = () => {
   // animate functionality
 
   return (
-    <div className="px-6 md:px-20 py-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div>
+      <h2 className="text-4xl font-bold text-center mt-12 text-primary">
+          Cars
+      </h2>
+      <div className="px-6 md:px-20 py-6 grid grid-cols-1 md:grid-cols-3 gap-6">
       {cars.map((car) => (
         <div
           key={car._id}
@@ -102,6 +117,8 @@ const BrowseCars = () => {
           </div>
         </div>
       ))}
+       <ToastContainer />
+    </div>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React, { use, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../provider/AuthContext";
+import LoadingSpinner from "../../Coponents/LoadingSpinner/LoadingSpinner";
 
 
 
@@ -116,10 +117,10 @@ const MyListings = () => {
   };
 
 
-  if (loading) return <p className="text-center mt-10">Loading...</p>;
+  if (loading) return <LoadingSpinner></LoadingSpinner>
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
+    <div className="max-w-6xl mx-auto p-6 min-h-screen">
       <h2 className="text-2xl font-bold mb-6 text-primary">My Listings</h2>
 
       {listings.length === 0 ? (

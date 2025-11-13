@@ -1,11 +1,12 @@
-import React, { use, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useLoaderData } from "react-router";
 import { AuthContext } from "../provider/AuthContext";
+import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 
 const CarDetails = () => {
   const car = useLoaderData();
-  const { user } = use(AuthContext);
+  const { user } = useContext(AuthContext);
   const [cars, setCars] = useState([]);
 
   // console.log(car)
@@ -47,6 +48,7 @@ const CarDetails = () => {
       setCars(
         cars.map((c) => (c._id === car._id ? { ...c, status: "Booked" } : c))
       );
+      toast.success("Booking successful");
     } catch (err) {
       console.error(err);
       alert("Failed to book car");
@@ -125,6 +127,7 @@ const CarDetails = () => {
           {car.status === "Booked" ? "Booked" : "Book Now"}
         </Link>
       </div>
+       <ToastContainer />
     </div>
   );
 };

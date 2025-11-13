@@ -19,9 +19,9 @@ const Footer = () => {
         {/* Contact Info */}
         <div>
           <h3 className="text-lg font-semibold mb-2 text-primary">Contact</h3>
-          <p className="text-sm text-base-300">Email: info@rentwheels.com</p>
-          <p className="text-sm text-base-300">Phone: +880 17xxxxxxxx</p>
-          <p className="text-sm text-base-300">Sylhet, Bangladesh</p>
+          <p className="text-sm text-white">Email: info@rentwheels.com</p>
+          <p className="text-sm text-white">Phone: +880 17xxxxxxxx</p>
+          <p className="text-sm text-white">Sylhet, Bangladesh</p>
         </div>
 
         {/* Terms & Conditions */}
@@ -31,17 +31,17 @@ const Footer = () => {
           </h3>
           <ul className="text-sm space-y-1 text-gray-300">
             <li>
-              <a href="#" className=" text-base-300 hover:text-primary">
+              <a href="#" className=" text-white hover:text-primary">
                 Privacy Policy
               </a>
             </li>
             <li>
-              <a href="#" className="text-base-300 hover:text-primary">
+              <a href="#" className="text-white hover:text-primary">
                 Refund Policy
               </a>
             </li>
             <li>
-              <a href="#" className="text-base-300 hover:text-primary">
+              <a href="#" className="text-white hover:text-primary">
                 FAQs
               </a>
             </li>

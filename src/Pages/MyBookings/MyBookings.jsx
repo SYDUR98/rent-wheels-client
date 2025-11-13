@@ -1,22 +1,31 @@
 import { use, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../../provider/AuthContext";
+import LoadingSpinner from "../../Coponents/LoadingSpinner/LoadingSpinner";
 
 const MyBookings = () => {
   const { user } = use(AuthContext);
   const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Fetch bookings
   useEffect(() => {
     if (!user?.email) return;
     axios
       .get(`http://localhost:3000/mybookings?email=${user.email}`)
-      .then((res) => setBookings(res.data))
+      .then((res) => {
+        setBookings(res.data)
+        setLoading(false)
+      })
       .catch((err) => console.log(err));
   }, [user]);
 
+   if(loading){
+      return <LoadingSpinner></LoadingSpinner>
+      }
+
   return (
-    <div className="max-w-6xl mx-auto p-6">
+    <div className="max-w-6xl mx-auto p-6 min-h-screen">
       <h2 className="text-2xl font-bold mb-6 text-primary">My Bookings</h2>
 
       {bookings.length === 0 ? (

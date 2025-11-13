@@ -1,16 +1,93 @@
-# React + Vite
+# RentWheels — Car Rental Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Live Site:** [https://your-client-site.netlify.app](https://your-client-site.netlify.app)
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Project Overview
 
-## React Compiler
+RentWheels is a full‑stack MERN (MongoDB, Express, React, Node) application that connects users with local car owners and rental providers. Users can browse available cars, view detailed information, and book rentals for specific dates. Providers can add and manage vehicle listings and bookings.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Key Features
 
-## Expanding the ESLint configuration
+* **Browse & Search Cars** — Public listing of cars with search by name and filters (category, location, status).
+* **Secure Authentication** — Email/password and Google sign-in using Firebase Auth. Registration collects name and photoURL.
+* **Provider Dashboard (My Listings)** — Providers can Add / Update / Delete car listings (private routes protected).
+* **Booking System** — Authenticated users can book cars; booking data is saved and car `status` is updated (prevents double booking).
+* **My Bookings** — Users can view the cars they booked with booking details.
+* **Real-time UI updates** — After booking or CRUD actions the UI updates immediately for better UX.
+* **Toasts & Alerts** — All success/error messages use toast (React‑Toastify or SweetAlert) — no browser alerts.
+* **Responsive UI** — Mobile-first, responsive grid layout for cards and pages.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Pages / Routes (Summary)
+
+* `/` — Home (Hero slider, Featured cars, Why Rent With Us, Extra sections)
+* `/browse` — Browse Cars (public)
+* `/car/:id` — Car Details (private — requires login)
+* `/login` — Login page (email/password + Google)
+* `/register` — Register page (name, email, photoURL, password)
+* `/add-car` — Add Car (private)
+* `/my-listings` — My Listings (private)
+* `/my-bookings` — My Bookings (private)
+* `*` — 404 Page (no navbar/footer)
+
+## Tech Stack
+
+* Frontend: React, React Router, Tailwind CSS / DaisyUI
+* Backend: Node.js, Express
+* Database: MongoDB (hosted)
+* Auth: Firebase Authentication (Email/Password + Google)
+* HTTP: Axios / fetch
+* Notifications: React‑Toastify or SweetAlert2
+* Optional UI extras: Framer Motion, React Simple Typewriter, Lottie React
+
+## API Endpoints (example)
+
+* `GET /browsecar` — list cars (supports `?status=Available` filter)
+* `POST /cars` — create car (provider)
+* `GET /cars/:id` — get car details
+* `PUT /cars/:id` — update car
+* `DELETE /cars/:id` — delete car
+* `POST /bookings` — create booking (updates car status)
+* `GET /bookings?userEmail={email}` — get user bookings
+
+
+
+## Installation (Local)
+
+1. Clone client and server repositories.
+2. In client folder:
+
+```bash
+npm install
+npm run dev
+# or
+npm start
+```
+
+3. In server folder:
+
+```bash
+npm install
+node index.js
+# or with nodemon
+npx nodemon index.js
+```
+
+
+
+
+
+##  Author
+
+* **[Md Sydur Rahaman]** - ([GitHub Profile]())
+
+
+
+
+
+
+
+
+
+
+

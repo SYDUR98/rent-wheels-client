@@ -1,46 +1,95 @@
-import React, { use } from "react";
+import React, { use, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../../provider/AuthContext";
+import { ToastContainer, toast } from "react-toastify";
+import { FaEye, FaRegEyeSlash } from "react-icons/fa";
 
 const Register = () => {
-  const { setUser, createUser, logInWithGoogle } = use(AuthContext);
+  const { setUser, createUser, logInWithGoogle, updateUser } = use(AuthContext);
   const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+   const [showPassword, setShowPassword] = useState(false);
 
-  const handleRegister = (e) => {
+
+
+  const handleToggleButton = (e) => {
     e.preventDefault();
+    setShowPassword(!showPassword);
+  };
+
+
+    const handleRegister = (e) => {
+    e.preventDefault();
+    setError("");
+
+    if (!acceptedTerms) {
+      setError("You must accept the terms and conditions.");
+      return;
+    }
+
     const name = e.target.name.value;
     const email = e.target.email.value;
     const photoURL = e.target.photoURL.value;
     const password = e.target.password.value;
-    console.log(name, email, photoURL, password);
 
+    //  Password validation
+    if (!/(?=.*[A-Z])/.test(password)) {
+      setError("Password must contain at least one uppercase letter.");
+      return;
+    }
+    if (!/(?=.*[a-z])/.test(password)) {
+      setError("Password must contain at least one lowercase letter.");
+      return;
+    }
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long.");
+      return;
+    }
+
+    //  Create user in Firebase
     createUser(email, password)
       .then((result) => {
-        console.log(result.user);
-        setUser(result.user);
-
-        const newUser = {
-          name: result.user.displayName,
-          email: result.user.email,
-          image: result.user.photoURL,
-        };
-
-        // create user in database
-        fetch("http://localhost:3000/users", {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify(newUser),
+        const user = result.user;
+        toast.success("Welcome! Your registration was successful");
+        // Update Firebase profile
+        updateUser({
+          displayName: name,
+          photoURL: photoURL,
         })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data);
-          });
-        navigate("/");
+          .then(() => {
+            // Local user update
+            setUser({
+              ...user,
+              displayName: name,
+              photoURL: photoURL,
+            });
+
+            // 🔹 Save user in your database
+            const newUser = {
+              name: name,
+              email: email,
+              image: photoURL,
+            };
+
+            fetch("http://localhost:3000/users", {
+              method: "POST",
+              headers: {
+                "content-type": "application/json",
+              },
+              body: JSON.stringify(newUser),
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                console.log("User saved:", data);
+                navigate("/");
+              });
+          })
+          .catch((err) => setError(err.message));
       })
-      .then((error) => {
+      .catch((error) => {
         console.log(error);
+        setError(error.message);
       });
   };
 
@@ -48,6 +97,7 @@ const Register = () => {
       logInWithGoogle()
       .then(result=>{
         console.log(result.user)
+        toast.success("Welcome! Your login was successful");
         setUser(result.user)
           const newUser = {
             name: result.user.displayName,
@@ -99,6 +149,7 @@ const Register = () => {
                 name="email"
                 className="input"
                 placeholder="Enter Your Email"
+                required
               />
               <label className="label">PhotoURL</label>
               <input
@@ -108,21 +159,43 @@ const Register = () => {
                 placeholder="Enter Your Photo URL"
               />
               <label className="label">Password</label>
-              <input
-                type="password"
+              <div className="relative">
+                <input
+               type={showPassword ? "text" : "password"}
                 name="password"
                 className="input"
                 placeholder="Enter Your Password"
+                required
               />
+              <button
+                onClick={handleToggleButton}
+                className="btn btn-xs absolute top-2 right-5 z-10 "
+              >
+                
+                {showPassword ? <FaRegEyeSlash /> : <FaEye />}
+              </button>
+              </div>
+              {error && <p className="text-red-500 text-sm">{error}</p>}
+               {/* Terms and conditiosn */}
+          <div className="flex items-center gap-2 mt-2">
+            <input
+              type="checkbox"
+              className="checkbox checkbox-sm"
+              onChange={(e) => setAcceptedTerms(e.target.checked)}
+            />
+            <label className="text-sm text-gray-700">
+              Accept <span className="font-semibold">Terms & Conditions</span>
+            </label>
+          </div>
               <div>
                 <a className="link link-hover">Forgot password?</a>
               </div>
-              <button className="btn btn-neutral mt-4">Register</button>
+              <button className="btn bg-primary/90 text-black/90 hover:bg-primary hover:text-black transition duration-200 mt-4">Register</button>
             </fieldset>
           </form>
           <button
             onClick={handleGoogle}
-            className="btn bg-white text-black border-[#e5e5e5]"
+            className="btn btn-outline btn-info text-black hover:bg-primary/10"
           >
             <svg
               aria-label="Google logo"
@@ -153,6 +226,7 @@ const Register = () => {
             </svg>
             Login with Google
           </button>
+           <ToastContainer />
         </div>
       </div>
     </div>
