@@ -4,15 +4,16 @@ import Banner from '../../Coponents/Banner/Banner';
 import WhyRent from '../../Coponents/WhyRent/WhyRent';
 import TopRatedCar from '../../Coponents/TopRatedCar/TopRatedCar';
 import CustomerTestimonials from '../../Coponents/CustomerTestimonials/CustomerTestimonials';
+import HomeSections from '../../Coponents/Shared/HomeSections';
 
 const Home = () => {
     return (
         <div>
             <Banner></Banner>
             <FeaturedCars></FeaturedCars>
-            <WhyRent></WhyRent>
             <TopRatedCar></TopRatedCar>
-            <CustomerTestimonials></CustomerTestimonials>
+            <HomeSections></HomeSections>
+            
         </div>
     );
 };
