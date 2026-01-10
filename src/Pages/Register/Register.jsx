@@ -71,14 +71,14 @@ const Register = () => {
               photoURL: photoURL,
             });
 
-            // 🔹 Save user in your database
+            //  Save user in your database
             const newUser = {
               name: name,
               email: email,
               image: photoURL,
             };
 
-            fetch("http://localhost:3000/users", {
+            fetch("https://rent-wheels-unique-api-server.vercel.app/users", {
               method: "POST",
               headers: {
                 "content-type": "application/json",
@@ -111,7 +111,7 @@ const Register = () => {
           image: result.user.photoURL,
         };
         // create user in database
-        fetch("http://localhost:3000/users", {
+        fetch("https://rent-wheels-unique-api-server.vercel.app/users", {
           method: "POST",
           headers: {
             "content-type": "application/json",

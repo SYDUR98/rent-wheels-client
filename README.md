@@ -10,7 +10,7 @@ Live Deploy Link: https://rent-wheels-app.web.app/
 Backend:
 
 Repository Link: https://github.com/SYDUR98/Rent-Wheels-server
-Live Deploy Link: http://localhost:3000/]
+Live Deploy Link: https://rent-wheels-unique-api-server.vercel.app/]
 
 
 

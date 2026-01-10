@@ -11,6 +11,16 @@ import MyBookings from "../Pages/MyBookings/MyBookings";
 import PrivateRoute from "../provider/PrivateRoute";
 import CarDetails from "../Pages/CarDetails";
 import ErrorPage from "../Coponents/ErrorPage/ErrorPage";
+import DashboardLayout from "../RootLayout/DashboardLayout";
+import AdminRoute from "./AdminRoute";
+import AdminHome from "../Pages/Dashboard/Admin/AdminHome";
+import ManageUsers from "../Pages/Dashboard/Admin/ManageUsers";
+import CarsDealerRoute from "./CarsDelarsRoute";
+import AddCars from "../Pages/Dashboard/CarsDelars/AddCars";
+import CarsDelarsHome from "../Pages/Dashboard/CarsDelars/CarsDelarsHome";
+import MyAllCars from "../Pages/Dashboard/CarsDelars/MyAllCars";
+import UserRoute from "./UserRoute";
+import UserStatus from "../Pages/Dashboard/Users/UserStatus";
 
 
 export const router = createBrowserRouter([
@@ -62,10 +72,69 @@ export const router = createBrowserRouter([
       {
         path: "/cars/:id",
          loader: ({ params }) =>
-         fetch(`http://localhost:3000/cars/${params.id}`),
+         fetch(`https://rent-wheels-unique-api-server.vercel.app/cars/${params.id}`),
         element: <CarDetails></CarDetails>
       },
      
     ],
   },
+  {
+    path: "dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout></DashboardLayout>
+      </PrivateRoute>
+    ),
+     children: [
+       {
+        path: "admin/home",
+        element: (
+          <AdminRoute>
+            <AdminHome></AdminHome>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "admin/manage-users",
+        element: (
+          <AdminRoute>
+            <ManageUsers></ManageUsers>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "cars-delars/add-cars",
+        element: (
+          <CarsDealerRoute>
+            <AddCars></AddCars>
+          </CarsDealerRoute>
+        ),
+      },
+      {
+        path: "cars-delars/cars-delar-home",
+        element: (
+          <CarsDealerRoute>
+            <CarsDelarsHome></CarsDelarsHome>
+          </CarsDealerRoute>
+        ),
+      },
+      {
+        path: "cars-delars/my-cars",
+        element: (
+          <CarsDealerRoute>
+            <MyAllCars></MyAllCars>
+          </CarsDealerRoute>
+        ),
+      },
+      {
+        path: "user/status",
+        element: (
+         <UserRoute>
+            <UserStatus></UserStatus>
+         </UserRoute>
+        ),
+      },
+
+     ]
+  }
 ]);

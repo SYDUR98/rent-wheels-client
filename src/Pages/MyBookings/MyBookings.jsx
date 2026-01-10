@@ -12,48 +12,62 @@ const MyBookings = () => {
   useEffect(() => {
     if (!user?.email) return;
     axios
-      .get(`http://localhost:3000/mybookings?email=${user.email}`)
+      .get(`https://rent-wheels-unique-api-server.vercel.app/mybookings?email=${user.email}`)
       .then((res) => {
-        setBookings(res.data)
-        setLoading(false)
+        setBookings(res.data);
+        setLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   }, [user]);
 
-   if(loading){
-      return <LoadingSpinner></LoadingSpinner>
-      }
+  if (loading) {
+    return <LoadingSpinner></LoadingSpinner>;
+  }
 
   return (
-    <div className="max-w-6xl mx-auto p-6 min-h-screen">
-      <h2 className="text-2xl font-bold mb-6 text-primary">My Bookings</h2>
+    /* Added bg-base-100 and text-base-content for theme support */
+    <div className="bg-base-100 text-base-content min-h-screen transition-colors duration-300">
+      <div className="max-w-6xl mx-auto p-6">
+        <h2 className="text-3xl font-bold mb-6 text-primary pt-6">My Bookings</h2>
 
-      {bookings.length === 0 ? (
-        <p className="text-accent">You have no bookings yet.</p>
-      ) : (
-        <div className="overflow-x-auto">
-          <table className="table-auto w-full border-collapse border border-base-300">
-            <thead>
-              <tr className="bg-primary text-primary-content">
-                <th className="px-4 py-2">Car Name</th>
-                <th className="px-4 py-2">Category</th>
-                <th className="px-4 py-2">Rent Price</th>
-                <th className="px-4 py-2">Location</th>
-              </tr>
-            </thead>
-            <tbody>
-              {bookings.map((car) => (
-                <tr key={car._id} className="text-center border-b border-base-300">
-                  <td className="px-4 py-2">{car.carName}</td>
-                  <td className="px-4 py-2">{car.category}</td>
-                  <td className="px-4 py-2">${car.rentPrice}</td>
-                  <td className="px-4 py-2">{car.location}</td>
+        {bookings.length === 0 ? (
+          <p className="text-error italic">You have no bookings yet.</p>
+        ) : (
+          /* Added border and rounded corners to the table container */
+          <div className="overflow-x-auto rounded-lg border border-base-300">
+            <table className="table w-full">
+              {/* Table Head with primary background */}
+              <thead>
+                <tr className="bg-primary text-primary-content">
+                  <th className="py-4 text-center">Car Name</th>
+                  <th className="py-4 text-center">Category</th>
+                  <th className="py-4 text-center">Rent Price</th>
+                  <th className="py-4 text-center">Location</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+              </thead>
+              {/* Table Body with hover effects */}
+              <tbody>
+                {bookings.map((car) => (
+                  <tr 
+                    key={car._id} 
+                    className="hover:bg-base-200 transition-colors border-b border-base-300 text-center"
+                  >
+                    <td className="py-4 font-medium">{car.carName}</td>
+                    <td className="py-4">{car.category}</td>
+                    <td className="py-4 font-semibold text-primary">
+                      ${car.rentPrice}
+                    </td>
+                    <td className="py-4">{car.location}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

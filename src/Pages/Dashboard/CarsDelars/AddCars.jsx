@@ -1,9 +1,12 @@
 import React, { useContext, useState } from "react";
 import Swal from "sweetalert2";
-import { AuthContext } from "../../provider/AuthContext";
+import { AuthContext } from "../../../provider/AuthContext";
+import useAxiosSecure from "../../../hooks/useAxiosSecure"; // Import useAxiosSecure
 
-const AddCar = () => {
+const AddCars = () => {
   const { user } = useContext(AuthContext);
+  const axiosSecure = useAxiosSecure(); // Initialize axiosSecure
+
   const [carData, setCarData] = useState({
     carName: "",
     description: "",
@@ -21,50 +24,51 @@ const AddCar = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Prepare car object
     const newCar = {
       ...carData,
-      providerName: user.displayName,
-      providerEmail: user.email,
+      providerName: user?.displayName,
+      providerEmail: user?.email,
       status: "Available",
+      createdAt: new Date(), // Good practice to add a timestamp
     };
 
     try {
-      const res = await fetch("https://rent-wheels-unique-api-server.vercel.app/cars", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newCar),
-      });
-      const data = await res.json();
+      // Use axiosSecure instead of fetch
+      // It will automatically add the Authorization header (Bearer token)
+      const res = await axiosSecure.post("/cars", newCar);
 
-      Swal.fire({
-        icon: "success",
-        title: "Car Added!",
-        text: `${carData.carName} has been added successfully.`,
-        timer: 2000,
-        showConfirmButton: false,
-      });
+      if (res.data.insertedId) {
+        Swal.fire({
+          icon: "success",
+          title: "Car Added!",
+          text: `${carData.carName} has been added successfully.`,
+          timer: 2000,
+          showConfirmButton: false,
+        });
 
-      // Reset form
-      setCarData({
-        carName: "",
-        description: "",
-        category: "Sedan",
-        rentPrice: "",
-        location: "",
-        image: "",
-      });
+        // Reset form after successful post
+        setCarData({
+          carName: "",
+          description: "",
+          category: "Sedan",
+          rentPrice: "",
+          location: "",
+          image: "",
+        });
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Error adding car:", error);
       Swal.fire({
         icon: "error",
         title: "Oops!",
-        text: "Something went wrong.",
+        text: error.response?.data?.message || "Something went wrong.",
       });
     }
   };
 
   return (
-    /* Changed bg-white to bg-base-100 and added text-base-content */
     <div className="max-w-3xl mx-auto p-6 bg-base-100 text-base-content rounded-lg shadow-md mt-6 border border-base-300 transition-colors duration-300">
       <h2 className="text-2xl font-bold mb-4 text-primary">Add New Car</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -76,7 +80,6 @@ const AddCar = () => {
           value={carData.carName}
           onChange={handleChange}
           placeholder="Car Name"
-          /* Added bg-base-100 and text-base-content to inputs */
           className="input input-bordered w-full bg-base-100 text-base-content border-primary/50 focus:border-primary focus:ring-primary"
           required
         />
@@ -139,26 +142,31 @@ const AddCar = () => {
         />
 
         {/* Provider Name (read-only) */}
-        <input
-          type="text"
-          value={user?.displayName || "N/A"}
-          readOnly
-          /* Changed bg-gray-100 to bg-base-200 for read-only fields */
-          className="input input-bordered w-full bg-base-200 text-base-content/60 cursor-not-allowed border-base-300"
-        />
+        <div className="form-control">
+            <label className="label"><span className="label-text">Provider Name</span></label>
+            <input
+            type="text"
+            value={user?.displayName || "N/A"}
+            readOnly
+            className="input input-bordered w-full bg-base-200 text-base-content/60 cursor-not-allowed border-base-300"
+            />
+        </div>
 
         {/* Provider Email (read-only) */}
-        <input
-          type="email"
-          value={user?.email || "N/A"}
-          readOnly
-          className="input input-bordered w-full bg-base-200 text-base-content/60 cursor-not-allowed border-base-300"
-        />
+        <div className="form-control">
+            <label className="label"><span className="label-text">Provider Email</span></label>
+            <input
+            type="email"
+            value={user?.email || "N/A"}
+            readOnly
+            className="input input-bordered w-full bg-base-200 text-base-content/60 cursor-not-allowed border-base-300"
+            />
+        </div>
 
         {/* Submit Button */}
         <button
           type="submit"
-          className="btn w-full bg-primary hover:bg-primary/80 text-white border-none"
+          className="btn w-full bg-primary hover:bg-primary/80 text-white border-none mt-4"
         >
           Add Car
         </button>
@@ -167,4 +175,4 @@ const AddCar = () => {
   );
 };
 
-export default AddCar;
+export default AddCars;
