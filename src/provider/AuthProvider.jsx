@@ -4,6 +4,7 @@ import { auth } from '../utilities/firebase.init';
 import { AuthContext } from './AuthContext';
 import LoadingSpinner from '../Coponents/LoadingSpinner/LoadingSpinner';
 import { FacebookAuthProvider } from "firebase/auth";
+import LoadingPage from '../Coponents/Shared/LoadingPage';
 
 
 
@@ -68,7 +69,7 @@ const AuthProvider = ({children}) => {
         <div>
             
             <AuthContext value={authInfo}>
-                 {loading ? <LoadingSpinner></LoadingSpinner> : children}
+                 {loading ? <LoadingPage></LoadingPage> : children}
             </AuthContext>,
             
 
