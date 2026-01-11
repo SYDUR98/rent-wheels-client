@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import { auth } from '../utilities/firebase.init';
 import { AuthContext } from './AuthContext';
-import LoadingSpinner from '../Coponents/LoadingSpinner/LoadingSpinner';
 import { FacebookAuthProvider } from "firebase/auth";
 import LoadingPage from '../Coponents/Shared/LoadingPage';
 
