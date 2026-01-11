@@ -30,9 +30,9 @@ const CarsDealerHome = () => {
 
   return (
     <div className="p-6 bg-base-100">
-      <h2 className="text-3xl font-bold text-center mb-6 text-primary">
-        Cars Dealer Dashboard
-      </h2>
+      <h1 className="text-4xl font-black tracking-tighter uppercase inline-block border-b-4 border-primary pb-2">
+          Cars Dealer <span className="text-primary">Dashboard</span>
+        </h1>
 
       {/* Stat Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

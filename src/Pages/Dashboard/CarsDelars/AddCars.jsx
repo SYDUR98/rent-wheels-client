@@ -69,108 +69,117 @@ const AddCars = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-base-100 text-base-content rounded-lg shadow-md mt-6 border border-base-300 transition-colors duration-300">
-      <h2 className="text-2xl font-bold mb-4 text-primary">Add New Car</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        
-        {/* Car Name */}
-        <input
-          type="text"
-          name="carName"
-          value={carData.carName}
-          onChange={handleChange}
-          placeholder="Car Name"
-          className="input input-bordered w-full bg-base-100 text-base-content border-primary/50 focus:border-primary focus:ring-primary"
-          required
-        />
-
-        {/* Description */}
-        <textarea
-          name="description"
-          value={carData.description}
-          onChange={handleChange}
-          placeholder="Car Description"
-          className="textarea textarea-bordered w-full bg-base-100 text-base-content border-primary/50 focus:border-primary focus:ring-primary"
-          required
-        />
-
-        {/* Category */}
-        <select
-          name="category"
-          value={carData.category}
-          onChange={handleChange}
-          className="select select-bordered w-full bg-base-100 text-base-content border-primary/50 focus:border-primary focus:ring-primary"
-        >
-          <option> Sedan </option>
-          <option> SUV </option>
-          <option> Hatchback </option>
-          <option> Luxury </option>
-          <option> Electric </option>
-        </select>
-
-        {/* Rent Price */}
-        <input
-          type="number"
-          name="rentPrice"
-          value={carData.rentPrice}
-          onChange={handleChange}
-          placeholder="Rent Price (per day)"
-          className="input input-bordered w-full bg-base-100 text-base-content border-primary/50 focus:border-primary focus:ring-primary"
-          required
-        />
-
-        {/* Location */}
-        <input
-          type="text"
-          name="location"
-          value={carData.location}
-          onChange={handleChange}
-          placeholder="Location"
-          className="input input-bordered w-full bg-base-100 text-base-content border-primary/50 focus:border-primary focus:ring-primary"
-          required
-        />
-
-        {/* Image URL */}
-        <input
-          type="url"
-          name="image"
-          value={carData.image}
-          onChange={handleChange}
-          placeholder="Hosted Image URL"
-          className="input input-bordered w-full bg-base-100 text-base-content border-primary/50 focus:border-primary focus:ring-primary"
-          required
-        />
-
-        {/* Provider Name (read-only) */}
-        <div className="form-control">
-            <label className="label"><span className="label-text">Provider Name</span></label>
-            <input
+    <div>
+      <div className="w-full flex justify-center mt-10">
+        <h1 className="text-4xl font-black tracking-tighter uppercase border-b-4 border-primary pb-2 text-base-content text-center inline-block">
+          Add New <span className="text-primary">Car</span>
+        </h1>
+      </div>
+      <div className="max-w-3xl mx-auto p-6 bg-base-100 text-base-content rounded-lg shadow-md mt-6 border border-base-300 transition-colors duration-300">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Car Name */}
+          <input
             type="text"
-            value={user?.displayName || "N/A"}
-            readOnly
-            className="input input-bordered w-full bg-base-200 text-base-content/60 cursor-not-allowed border-base-300"
-            />
-        </div>
+            name="carName"
+            value={carData.carName}
+            onChange={handleChange}
+            placeholder="Car Name"
+            className="input input-bordered w-full bg-base-100 text-base-content border-primary/50 focus:border-primary focus:ring-primary"
+            required
+          />
 
-        {/* Provider Email (read-only) */}
-        <div className="form-control">
-            <label className="label"><span className="label-text">Provider Email</span></label>
+          {/* Description */}
+          <textarea
+            name="description"
+            value={carData.description}
+            onChange={handleChange}
+            placeholder="Car Description"
+            className="textarea textarea-bordered w-full bg-base-100 text-base-content border-primary/50 focus:border-primary focus:ring-primary"
+            required
+          />
+
+          {/* Category */}
+          <select
+            name="category"
+            value={carData.category}
+            onChange={handleChange}
+            className="select select-bordered w-full bg-base-100 text-base-content border-primary/50 focus:border-primary focus:ring-primary"
+          >
+            <option> Sedan </option>
+            <option> SUV </option>
+            <option> Hatchback </option>
+            <option> Luxury </option>
+            <option> Electric </option>
+          </select>
+
+          {/* Rent Price */}
+          <input
+            type="number"
+            name="rentPrice"
+            value={carData.rentPrice}
+            onChange={handleChange}
+            placeholder="Rent Price (per day)"
+            className="input input-bordered w-full bg-base-100 text-base-content border-primary/50 focus:border-primary focus:ring-primary"
+            required
+          />
+
+          {/* Location */}
+          <input
+            type="text"
+            name="location"
+            value={carData.location}
+            onChange={handleChange}
+            placeholder="Location"
+            className="input input-bordered w-full bg-base-100 text-base-content border-primary/50 focus:border-primary focus:ring-primary"
+            required
+          />
+
+          {/* Image URL */}
+          <input
+            type="url"
+            name="image"
+            value={carData.image}
+            onChange={handleChange}
+            placeholder="Hosted Image URL"
+            className="input input-bordered w-full bg-base-100 text-base-content border-primary/50 focus:border-primary focus:ring-primary"
+            required
+          />
+
+          {/* Provider Name (read-only) */}
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Provider Name</span>
+            </label>
             <input
-            type="email"
-            value={user?.email || "N/A"}
-            readOnly
-            className="input input-bordered w-full bg-base-200 text-base-content/60 cursor-not-allowed border-base-300"
+              type="text"
+              value={user?.displayName || "N/A"}
+              readOnly
+              className="input input-bordered w-full bg-base-200 text-base-content/60 cursor-not-allowed border-base-300"
             />
-        </div>
+          </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="btn w-full bg-primary hover:bg-primary/80 text-white border-none mt-4"
-        >
-          Add Car
-        </button>
-      </form>
+          {/* Provider Email (read-only) */}
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Provider Email</span>
+            </label>
+            <input
+              type="email"
+              value={user?.email || "N/A"}
+              readOnly
+              className="input input-bordered w-full bg-base-200 text-base-content/60 cursor-not-allowed border-base-300"
+            />
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="btn w-full bg-primary hover:bg-primary/80 text-white border-none mt-4"
+          >
+            Add Car
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

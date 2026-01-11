@@ -3,6 +3,7 @@ import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged,
 import { auth } from '../utilities/firebase.init';
 import { AuthContext } from './AuthContext';
 import LoadingSpinner from '../Coponents/LoadingSpinner/LoadingSpinner';
+import { FacebookAuthProvider } from "firebase/auth";
 
 
 
@@ -10,6 +11,7 @@ const AuthProvider = ({children}) => {
     const [user,setUser] = useState(null)
     const [loading,setLoading] = useState(true)
     const googleProvider = new GoogleAuthProvider();
+    const facebookProvider = new FacebookAuthProvider();
 
     const createUser = (email, password)=>{
         
@@ -29,6 +31,11 @@ const AuthProvider = ({children}) => {
         
         return signInWithPopup(auth,googleProvider)
     }
+
+    const logInWithFacebook = () => {
+        setLoading(true);
+        return signInWithPopup(auth, facebookProvider);
+    };
 
     const logOut = () =>{
         return signOut(auth)
@@ -52,7 +59,8 @@ const AuthProvider = ({children}) => {
     logOut,
     createUser,
     logInWithEmailPass,
-    updateUser
+    updateUser,
+    logInWithFacebook
 
     }
 

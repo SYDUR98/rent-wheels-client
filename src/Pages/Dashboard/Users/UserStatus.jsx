@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from "react";
 import useAuth from "../../../hooks/useAuth";
-import useAxiosSecure from "../../../hooks/useAxiosSecure"; // Import your custom hook
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
+import { FaBookmark, FaCar, FaTrashAlt, FaTimesCircle, FaChartLine } from "react-icons/fa";
 
 const UserStatus = () => {
   const { user, loading: authLoading } = useAuth();
-  const axiosSecure = useAxiosSecure(); // Use axiosSecure instead of regular axios
-  
+  const axiosSecure = useAxiosSecure();
+
   const [data, setData] = useState({ user: {}, myBookings: [], myCars: [] });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Wait for auth to finish and check for user email
     if (authLoading || !user?.email) return;
 
     const fetchDashboardData = async () => {
       try {
         setLoading(true);
-        // Use axiosSecure to automatically include the Authorization header
         const res = await axiosSecure.get(`/user-dashboard/${user.email}`);
         setData(res.data);
       } catch (err) {
-        // Error is handled by axiosSecure interceptors (e.g., logout on 401/403)
         console.error("Dashboard Fetch Error:", err);
       } finally {
         setLoading(false);
@@ -30,133 +29,207 @@ const UserStatus = () => {
     fetchDashboardData();
   }, [user?.email, authLoading, axiosSecure]);
 
+  // SweetAlert Theme Helper
+  const swalConfig = {
+    background: document.documentElement.getAttribute("data-theme") === "dark" ? "#1d232a" : "#fff",
+    color: document.documentElement.getAttribute("data-theme") === "dark" ? "#A6ADBB" : "#1f2937",
+  };
+
   const handleUnbook = async (bookingId) => {
-    if (!window.confirm("Are you sure to unbook?")) return;
-    try {
-      await axiosSecure.delete(`/bookings/${bookingId}`);
-      setData((prev) => ({
-        ...prev,
-        myBookings: prev.myBookings.filter((b) => b._id !== bookingId),
-      }));
-    } catch (err) {
-      console.error(err);
-    }
+    Swal.fire({
+      ...swalConfig,
+      title: "Are you sure?",
+      text: "Do you want to cancel this booking?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#3b82f6",
+      confirmButtonText: "Yes, Unbook!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axiosSecure.delete(`/bookings/${bookingId}`);
+          setData((prev) => ({
+            ...prev,
+            myBookings: prev.myBookings.filter((b) => b._id !== bookingId),
+          }));
+          Swal.fire({ ...swalConfig, title: "Cancelled!", icon: "success" });
+        } catch (err) {
+          Swal.fire({ ...swalConfig, title: "Error", text: "Could not cancel.", icon: "error" });
+        }
+      }
+    });
   };
 
   const handleDeleteCar = async (carId) => {
-    if (!window.confirm("Are you sure to delete this car?")) return;
-    try {
-      await axiosSecure.delete(`/cars/${carId}`);
-      setData((prev) => ({
-        ...prev,
-        myCars: prev.myCars.filter((c) => c._id !== carId),
-      }));
-    } catch (err) {
-      console.error(err);
-    }
+    Swal.fire({
+      ...swalConfig,
+      title: "Delete Listing?",
+      text: "This action cannot be undone!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#3b82f6",
+      confirmButtonText: "Yes, Delete!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axiosSecure.delete(`/cars/${carId}`);
+          setData((prev) => ({
+            ...prev,
+            myCars: prev.myCars.filter((c) => c._id !== carId),
+          }));
+          Swal.fire({ ...swalConfig, title: "Deleted!", icon: "success" });
+        } catch (err) {
+          Swal.fire({ ...swalConfig, title: "Error", text: "Failed to delete.", icon: "error" });
+        }
+      }
+    });
   };
 
   if (authLoading || loading) {
     return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
+      <div className="flex flex-col justify-center items-center min-h-[400px] bg-base-100 transition-colors">
+        <span className="loading loading-infinity loading-lg text-primary"></span>
+        <p className="mt-4 text-primary font-bold animate-pulse">Syncing Dashboard...</p>
       </div>
     );
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-6 space-y-8">
-      {/* Profile Info */}
-      <div className="flex items-center gap-6 bg-white p-6 rounded-xl shadow-md border border-gray-100">
-        <img
-          src={data.user?.image || "https://via.placeholder.com/150"}
-          alt="profile"
-          className="w-24 h-24 rounded-full border-4 border-blue-50"
-        />
-        <div>
-          <h2 className="font-bold text-2xl text-gray-800">{data.user?.name}</h2>
-          <p className="text-gray-500">{data.user?.email}</p>
-          <div className="mt-2">
-            <span className="text-xs uppercase font-bold bg-blue-100 text-blue-600 px-3 py-1 rounded-full">
-              {data.user?.role}
-            </span>
+    <div className="w-full p-4 md:p-8 space-y-10 bg-base-100 min-h-screen transition-colors duration-300">
+      
+      {/* Dashboard Title */}
+      <div className="text-center mb-12">
+        <h1 className="text-4xl font-black tracking-tighter uppercase inline-block border-b-4 border-primary pb-2">
+          User <span className="text-primary">Dashboard</span>
+        </h1>
+        <p className="text-base-content/60 mt-2 font-medium">Manage your activities and listings</p>
+      </div>
+
+      {/* --- Statistics Section (Dark Mode Enhanced) --- */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div className="stats shadow bg-base-200 border border-base-300">
+          <div className="stat">
+            <div className="stat-figure text-primary text-3xl"><FaBookmark /></div>
+            <div className="stat-title text-base-content/70">Total Bookings</div>
+            <div className="stat-value text-primary">{data.myBookings?.length || 0}</div>
+          </div>
+        </div>
+        <div className="stats shadow bg-base-200 border border-base-300">
+          <div className="stat">
+            <div className="stat-figure text-secondary text-3xl"><FaCar /></div>
+            <div className="stat-title text-base-content/70">My Listings</div>
+            <div className="stat-value text-secondary">{data.myCars?.length || 0}</div>
+          </div>
+        </div>
+        <div className="stats shadow bg-primary text-primary-content">
+          <div className="stat">
+            <div className="stat-figure text-3xl"><FaChartLine /></div>
+            <div className="stat-title opacity-80">Activity Rate</div>
+            <div className="stat-value">High</div>
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Bookings Section */}
-        <div className="bg-white rounded-xl shadow-md p-6">
-          <h3 className="font-bold text-lg mb-4 text-blue-700 border-b pb-2">
-            My Bookings ({data.myBookings?.length || 0})
-          </h3>
-          {data.myBookings?.length > 0 ? (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left">
-                <thead>
-                  <tr className="border-b">
-                    <th className="p-3">Car</th>
-                    <th className="p-3">Price</th>
-                    <th className="p-3">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.myBookings.map((b) => (
-                    <tr key={b._id} className="border-b hover:bg-gray-50">
-                      <td className="p-3">{b.carName}</td>
-                      <td className="p-3 font-bold">${b.rentPrice}</td>
-                      <td className="p-3">
-                        <button
-                          className="bg-red-500 text-white px-4 py-1.5 rounded text-sm"
-                          onClick={() => handleUnbook(b._id)}
-                        >
-                          Unbook
-                        </button>
-                      </td>
+        
+        {/* --- Bookings Table --- */}
+        <div className="bg-base-100 rounded-3xl shadow-2xl border border-base-300 overflow-hidden transition-all hover:shadow-primary/5">
+          <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-5 flex items-center justify-between text-white">
+            <h3 className="font-bold text-xl flex items-center gap-3">
+              <FaBookmark /> Active Bookings
+            </h3>
+            <span className="bg-white/20 px-3 py-1 rounded-full text-xs font-black">
+              LIVE
+            </span>
+          </div>
+          <div className="p-2 md:p-6">
+            {data.myBookings?.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="table w-full">
+                  <thead>
+                    <tr className="text-base-content/50 border-b border-base-300 uppercase text-xs">
+                      <th>Vehicle</th>
+                      <th>Price</th>
+                      <th className="text-right">Action</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : <p className="text-gray-400">No bookings found.</p>}
+                  </thead>
+                  <tbody className="divide-y divide-base-300/30">
+                    {data.myBookings.map((b) => (
+                      <tr key={b._id} className="hover:bg-base-200/50 transition-colors group">
+                        <td>
+                            <div className="font-bold group-hover:text-primary transition-colors">{b.carName}</div>
+                            <div className="text-[10px] opacity-50 uppercase tracking-widest">{b._id.slice(-6)}</div>
+                        </td>
+                        <td className="font-black text-primary">${b.rentPrice}</td>
+                        <td className="text-right">
+                          <button
+                            className="btn btn-ghost btn-circle text-error hover:bg-error/10"
+                            onClick={() => handleUnbook(b._id)}
+                            title="Cancel Booking"
+                          >
+                            <FaTimesCircle className="text-lg" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="text-center py-16 opacity-40 italic">No active bookings found.</div>
+            )}
+          </div>
         </div>
 
-        {/* Listings Section */}
-        <div className="bg-white rounded-xl shadow-md p-6">
-          <h3 className="font-bold text-lg mb-4 text-indigo-700 border-b pb-2">
-            My Cars ({data.myCars?.length || 0})
-          </h3>
-          {data.myCars?.length > 0 ? (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left">
-                <thead>
-                  <tr className="border-b">
-                    <th className="p-3">Car</th>
-                    <th className="p-3">Status</th>
-                    <th className="p-3">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.myCars.map((c) => (
-                    <tr key={c._id} className="border-b hover:bg-gray-50">
-                      <td className="p-3">{c.carName}</td>
-                      <td className="p-3">
-                        <span className="badge badge-ghost text-xs uppercase">{c.status || "Available"}</span>
-                      </td>
-                      <td className="p-3">
-                        <button
-                          className="bg-gray-800 text-white px-4 py-1.5 rounded text-sm"
-                          onClick={() => handleDeleteCar(c._id)}
-                        >
-                          Delete
-                        </button>
-                      </td>
+        {/* --- Listings Table --- */}
+        <div className="bg-base-100 rounded-3xl shadow-2xl border border-base-300 overflow-hidden transition-all hover:shadow-secondary/5">
+          <div className="bg-gradient-to-r from-indigo-700 to-purple-700 p-5 flex items-center justify-between text-white">
+            <h3 className="font-bold text-xl flex items-center gap-3">
+              <FaCar /> My Listings
+            </h3>
+            <span className="bg-white/20 px-3 py-1 rounded-full text-xs font-black">MANAGEMENT</span>
+          </div>
+          <div className="p-2 md:p-6">
+            {data.myCars?.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="table w-full">
+                  <thead>
+                    <tr className="text-base-content/50 border-b border-base-300 uppercase text-xs">
+                      <th>Car Name</th>
+                      <th>Status</th>
+                      <th className="text-right">Action</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : <p className="text-gray-400">No cars listed.</p>}
+                  </thead>
+                  <tbody className="divide-y divide-base-300/30">
+                    {data.myCars.map((c) => (
+                      <tr key={c._id} className="hover:bg-base-200/50 transition-colors">
+                        <td className="font-bold">{c.carName}</td>
+                        <td>
+                          <span className={`badge badge-sm font-bold ${
+                              c.status === "Available" ? "badge-success" : "badge-warning"
+                            } transition-all`}>
+                            {c.status || "Available"}
+                          </span>
+                        </td>
+                        <td className="text-right">
+                          <button
+                            className="btn btn-ghost btn-circle text-error hover:bg-error/10"
+                            onClick={() => handleDeleteCar(c._id)}
+                          >
+                            <FaTrashAlt />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="text-center py-16 opacity-40 italic">You haven't listed any cars yet.</div>
+            )}
+          </div>
         </div>
       </div>
     </div>

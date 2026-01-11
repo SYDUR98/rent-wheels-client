@@ -4,6 +4,7 @@ import { AuthContext } from "../../provider/AuthContext";
 import { toast } from "react-toastify";
 import { FaEye, FaRegEyeSlash } from "react-icons/fa";
 import Swal from "sweetalert2";
+import FcLogin from "../../Coponents/Shared/FcLogin";
 
 const Register = () => {
   const { setUser, createUser, logInWithGoogle, updateUser } = use(AuthContext);
@@ -235,6 +236,7 @@ const Register = () => {
             </svg>
             Login with Google
           </button>
+          <FcLogin></FcLogin>
         </div>
       </div>
     </div>

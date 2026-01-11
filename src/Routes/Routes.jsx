@@ -21,13 +21,19 @@ import CarsDelarsHome from "../Pages/Dashboard/CarsDelars/CarsDelarsHome";
 import MyAllCars from "../Pages/Dashboard/CarsDelars/MyAllCars";
 import UserRoute from "./UserRoute";
 import UserStatus from "../Pages/Dashboard/Users/UserStatus";
+import Profile from "../Coponents/Shared/Profile";
+import AllInventory from "../Pages/Dashboard/Admin/AllInventory";
+import About from "../Coponents/AditionalPage/About";
+import Contact from "../Coponents/AditionalPage/Contact";
+import FAQ from "../Coponents/AditionalPage/FAQ";
+
 
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout></RootLayout>,
-    errorElement:<ErrorPage></ErrorPage>,
+    // errorElement:<ErrorPage></ErrorPage>,
     children: [
       {
         index: true,
@@ -65,9 +71,22 @@ export const router = createBrowserRouter([
         path: "/register",
         element: <Register></Register>,
       },
+      
       {
         path: "/login",
         element: <Login></Login>,
+      },
+      {
+        path: "/about",
+        element: <About></About>,
+      },
+      {
+        path: "/contact",
+        element:<Contact></Contact>,
+      },
+      {
+        path: "/faq",
+        element: <FAQ></FAQ>
       },
       {
         path: "/cars/:id",
@@ -87,6 +106,12 @@ export const router = createBrowserRouter([
     ),
      children: [
        {
+        path: "profile",
+        element: (
+          <Profile></Profile>
+        ),
+      },
+       {
         path: "admin/home",
         element: (
           <AdminRoute>
@@ -99,6 +124,14 @@ export const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <ManageUsers></ManageUsers>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "admin/all-cars",
+        element: (
+          <AdminRoute>
+            <AllInventory></AllInventory>
           </AdminRoute>
         ),
       },

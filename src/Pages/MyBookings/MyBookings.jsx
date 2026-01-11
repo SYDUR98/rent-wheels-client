@@ -31,7 +31,10 @@ const MyBookings = () => {
     /* Added bg-base-100 and text-base-content for theme support */
     <div className="bg-base-100 text-base-content min-h-screen transition-colors duration-300">
       <div className="max-w-6xl mx-auto p-6">
-        <h2 className="text-3xl font-bold mb-6 text-primary pt-6">My Bookings</h2>
+        
+        <h2 className="text-4xl text-center font-extrabold tracking-tighter uppercase pt-8 pb-10">
+          My <span className="text-primary border-b-4 border-primary">Bookings</span>
+        </h2>
 
         {bookings.length === 0 ? (
           <p className="text-error italic">You have no bookings yet.</p>

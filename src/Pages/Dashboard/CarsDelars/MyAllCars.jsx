@@ -1,30 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../../../hooks/useAuth';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
- // Import your custom hook
+import LoadingPage from '../../../Coponents/Shared/LoadingPage';
+
+
 
 const MyAllCars = () => {
   const [inventory, setInventory] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  const { user } = useAuth(); // Get current logged-in user
-  const axiosSecure = useAxiosSecure(); // Initialize secure axios instance
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
     const fetchInventory = async () => {
-      // Avoid calling API if user email is not available yet
       if (!user?.email) return;
 
       try {
         setLoading(true);
-        
-        // Use axiosSecure to automatically include the Bearer token
-        // baseURL is already set in your hook, so just use the endpoint
         const res = await axiosSecure.get(`/dealer-inventory?email=${user?.email}`);
-        
         setInventory(res.data);
       } catch (err) {
-        // Errors (401/403) will be handled by your useAxiosSecure interceptor
         console.error("Error fetching inventory", err);
       } finally {
         setLoading(false);
@@ -32,56 +28,94 @@ const MyAllCars = () => {
     };
 
     fetchInventory();
-  }, [user?.email, axiosSecure]); // Dependencies for useEffect
+  }, [user?.email, axiosSecure]);
 
-  if (loading) return <div className="p-10 text-center text-xl">Loading...</div>;
+  if (loading) return <LoadingPage />;
 
   return (
-    <div className="p-10">
-      <h2 className="text-2xl font-bold mb-5">My Car Inventory</h2>
-      <div className="overflow-x-auto shadow-md rounded-lg">
-        <table className="table w-full bg-white">
-          <thead className="bg-gray-200">
+    <div className="bg-base-100 min-h-screen p-4 md:p-8 transition-colors duration-300">
+      {/* Header Section */}
+      <div className="text-center mb-12">
+        <h1 className="text-4xl font-black tracking-tighter uppercase inline-block border-b-4 border-primary pb-2 text-base-content">
+          Dealer <span className="text-primary">Inventory</span>
+        </h1>
+        <p className="text-base-content/60 mt-2 font-medium italic">Track your listed vehicles and their booking status</p>
+      </div>
+
+      {/* Table Container */}
+      <div className="max-w-6xl mx-auto overflow-x-auto shadow-2xl rounded-2xl border border-base-300">
+        <table className="table w-full bg-base-100">
+          {/* Head */}
+          <thead className="bg-base-200 text-base-content uppercase text-sm">
             <tr>
-              <th className="p-4 text-left">Car Name</th>
-              <th className="p-4 text-left">Rent Price</th>
-              <th className="p-4 text-left">Status</th>
-              <th className="p-4 text-left">Booked By</th>
+              <th className="p-5 font-bold">Vehicle Details</th>
+              <th className="p-5 font-bold">Rent Price</th>
+              <th className="p-5 font-bold">Status</th>
+              <th className="p-5 font-bold">Booked By</th>
             </tr>
           </thead>
-          <tbody>
+          
+          {/* Body */}
+          <tbody className="divide-y divide-base-300">
             {inventory.length > 0 ? (
               inventory.map((car) => (
-                <tr key={car._id} className="border-b hover:bg-gray-50">
+                <tr key={car._id} className="hover:bg-base-200/50 transition-colors group">
                   <td className="p-4">
-                    <div className="flex items-center gap-3">
-                      <img 
-                        src={car.image} 
-                        alt={car.carName}
-                        className="w-12 h-10 rounded object-cover" 
-                      />
-                      <span className="font-semibold">{car.carName}</span>
+                    <div className="flex items-center gap-4">
+                      <div className="avatar">
+                        <div className="mask mask-squircle w-16 h-12">
+                          <img 
+                            src={car.image} 
+                            alt={car.carName}
+                            className="object-cover"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <div className="font-black text-base-content group-hover:text-primary transition-colors">
+                          {car.carName}
+                        </div>
+                        <div className="text-xs opacity-50 uppercase tracking-tighter">ID: {car._id.slice(-6)}</div>
+                      </div>
                     </div>
                   </td>
-                  <td className="p-4">${car.rentPrice}</td>
+                  
+                  <td className="p-4 font-bold text-primary text-lg">
+                    ${car.rentPrice}<span className="text-xs text-base-content/50">/day</span>
+                  </td>
+                  
                   <td className="p-4">
-                    <span className={`px-2 py-1 rounded text-xs font-bold ${
+                    <span className={`badge badge-md font-bold border-none py-3 px-4 ${
                       car.status === "Booked" 
-                      ? 'bg-red-100 text-red-600' 
-                      : 'bg-green-100 text-green-600'
+                      ? 'bg-error/10 text-error' 
+                      : 'bg-success/10 text-success'
                     }`}>
-                      {car.status}
+                      {car.status === "Booked" ? "🔴 Booked" : "🟢 Available"}
                     </span>
                   </td>
-                  <td className="p-4 text-blue-600 text-sm font-medium">
-                    {car.bookedBy || "N/A"}
+                  
+                  <td className="p-4">
+                    {car.bookedBy ? (
+                      <div className="flex flex-col">
+                        <span className="text-sm font-semibold text-primary underline decoration-dotted">
+                          {car.bookedBy}
+                        </span>
+                        <span className="text-[10px] opacity-50 italic">Verified Client</span>
+                      </div>
+                    ) : (
+                      <span className="badge badge-ghost badge-sm opacity-50">N/A</span>
+                    )}
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="4" className="p-10 text-center text-red-500 font-medium">
-                  No cars found for: {user?.email}
+                <td colSpan="4" className="p-20 text-center">
+                   <div className="flex flex-col items-center gap-2">
+                      <span className="text-5xl opacity-20">🚗</span>
+                      <p className="text-error font-bold text-lg">No cars found in your inventory!</p>
+                      <p className="text-base-content/50 text-sm italic">{user?.email}</p>
+                   </div>
                 </td>
               </tr>
             )}

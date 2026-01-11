@@ -5,9 +5,13 @@ const CustomerTestimonials = () => {
   return (
     /* Changed fixed background opacity and added text-base-content */
     <section className="py-16 px-6 md:px-20 bg-base-100 text-base-content transition-colors duration-300">
-      <h2 className="text-4xl font-bold text-center mb-12 text-primary">
-        Customer Testimonials
-      </h2>
+      
+      <h2 className="text-4xl text-center font-extrabold tracking-tighter uppercase pt-8 pb-10">
+              Customer
+              <span className="text-primary border-b-4 border-primary ml-2">
+                Testimonials
+              </span>
+            </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {/* Testimonial 1 */}

@@ -6,9 +6,9 @@ const WhyRent = () => {
     /* Changed 'bg-white' to 'bg-base-100' and added 'text-base-content' 
        This keeps it white in light mode and dark in dark mode */
     <section className="py-16 px-6 md:px-20 bg-base-100 text-base-content transition-colors duration-300">
-      <h2 className="text-4xl font-bold text-center mb-12 text-primary">
-        Why Rent With Us
-      </h2>
+      <h2 className="text-4xl text-center font-extrabold tracking-tighter uppercase pt-8 pb-10">
+          Why Rent <span className="text-primary border-b-4 border-primary">With Us</span>
+        </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {/* Card 1 */}

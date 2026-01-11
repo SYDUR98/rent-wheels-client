@@ -72,8 +72,10 @@ const BrowseCars = () => {
   };
 
   return (
-    <div className="bg-base-100 text-base-content min-h-screen pb-10">
-      <h2 className="text-4xl font-bold text-center pt-12 text-primary">Explore Cars</h2>
+    <div className="bg-base-100 text-base-content min-h-screen mt-12 pt-8 pb-10">
+       <h2 className="text-4xl text-center font-extrabold tracking-tighter uppercase">
+          Explore <span className="text-primary border-b-4 border-primary">Cars</span>
+        </h2>
 
       {/* --- SEARCH & FILTER SECTION --- */}
       <div className="container mx-auto px-6 mt-8 grid grid-cols-1 md:grid-cols-4 gap-4">
