@@ -6,6 +6,7 @@ import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import LoadingSpinner from '../../../Coponents/LoadingSpinner/LoadingSpinner';
 import Swal from 'sweetalert2';
 import { FaTrashAlt, FaEdit, FaCarAlt } from 'react-icons/fa';
+import LoadingPage from '../../../Coponents/Shared/LoadingPage';
 
 const AllInventory = () => {
     const { user } = useAuth();
@@ -43,7 +44,7 @@ const AllInventory = () => {
         });
     };
 
-    if (isLoading) return <LoadingSpinner />;
+    if (isLoading) return <LoadingPage></LoadingPage>;
 
     return (
         <div className="w-full p-6">

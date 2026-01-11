@@ -1,35 +1,57 @@
 import React from "react";
-import { FaSpinner, FaCircle, FaStar } from "react-icons/fa";
+import { FaSpinner, FaCarSide } from "react-icons/fa";
 
 const LoadingPage = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 overflow-hidden">
+    <div className="flex flex-col items-center justify-start min-h-screen pt-24 md:pt-32 
+                    /* Background colors matched with your DaisyUI base-100 */
+                    bg-base-100 transition-all duration-500 overflow-hidden">
       
-      {/* Floating Icons */}
-      <div className="relative w-40 h-40 mb-6">
-        <FaCircle className="absolute top-0 left-1/4 text-white/50 animate-bounce-slow text-4xl" />
-        <FaStar className="absolute top-1/2 left-1/2 text-yellow-300 animate-spin-slow text-5xl" />
-        <FaCircle className="absolute bottom-0 right-1/3 text-white/40 animate-bounce-slow text-3xl" />
+      {/* Slim Container */}
+      <div className="flex flex-col items-center w-full max-w-xs md:max-w-sm px-6">
+        
+        {/* Car Icon - Matched with your Primary Color (#4D9ED0 / #1E40AF) */}
+        <div className="relative mb-4 animate-car-drive">
+          <FaCarSide className="text-primary text-6xl md:text-7xl drop-shadow-xl" />
+        </div>
+
+        {/* Road Line - Using base-300 for the track */}
+        <div className="w-32 h-1.5 bg-base-300 relative overflow-hidden rounded-full mb-8">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary to-transparent w-full animate-road-flow"></div>
+        </div>
+
+        {/* Spinner & Text Grouped Closer */}
+        <div className="flex flex-col items-center gap-4">
+          <FaSpinner className="text-3xl text-primary animate-spin" />
+          
+          <div className="text-center">
+            {/* Using base-content for main text to follow theme contrast */}
+            <h1 className="text-xl md:text-2xl font-black tracking-[0.2em] uppercase italic 
+                           text-base-content">
+              Rent<span className="text-primary">Wheels</span>
+            </h1>
+            <p className="text-[10px] tracking-[0.4em] uppercase font-bold mt-2 
+                          text-primary/70">
+              Starting Engine...
+            </p>
+          </div>
+        </div>
       </div>
 
-      {/* Main Spinner */}
-      <FaSpinner className="text-6xl text-white animate-spin mb-4 drop-shadow-xl" />
-
-      {/* Glowing Text */}
-      <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-2 animate-pulse drop-shadow-lg">
-        Loading, please wait...
-      </h1>
-      <p className="text-white/80 text-center max-w-md">
-        Hang tight! Your content is on its way.
-      </p>
-
-      {/* Tailwind Custom Animation */}
       <style>{`
-        .animate-bounce-slow {
-          animation: bounce 3s infinite;
+        @keyframes carDrive {
+          0%, 100% { transform: translateX(-15px) translateY(0px); }
+          50% { transform: translateX(15px) translateY(-2px); }
         }
-        .animate-spin-slow {
-          animation: spin 6s linear infinite;
+        @keyframes roadFlow {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+        .animate-car-drive {
+          animation: carDrive 1.5s ease-in-out infinite;
+        }
+        .animate-road-flow {
+          animation: roadFlow 0.8s linear infinite;
         }
       `}</style>
     </div>

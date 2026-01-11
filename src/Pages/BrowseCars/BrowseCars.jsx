@@ -6,6 +6,7 @@ import { Link } from "react-router";
 import { Tooltip } from "react-tooltip";
 import { ToastContainer, toast } from "react-toastify";
 import LoadingSpinner from "../../Coponents/LoadingSpinner/LoadingSpinner";
+import LoadingPage from "../../Coponents/Shared/LoadingPage";
 
 const BrowseCars = () => {
   const { user } = useContext(AuthContext);
@@ -118,7 +119,7 @@ const BrowseCars = () => {
       <div className="container mx-auto px-6 py-10">
         {loading ? (
           <div className="flex justify-center items-center min-h-[400px]">
-            <LoadingSpinner />
+            <LoadingPage></LoadingPage>
           </div>
         ) : cars.length === 0 ? (
           <div className="text-center py-20">

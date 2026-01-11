@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import { AuthContext } from "../../provider/AuthContext";
 import LoadingSpinner from "../../Coponents/LoadingSpinner/LoadingSpinner";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import LoadingPage from "../../Coponents/Shared/LoadingPage";
 
 const MyListings = () => {
   const { user } = useContext(AuthContext);
@@ -103,7 +104,7 @@ const MyListings = () => {
     }
   };
 
-  if (loading) return <LoadingSpinner />;
+  if (loading) return <LoadingPage></LoadingPage>;
 
   return (
     <div className="bg-base-100 text-base-content min-h-screen transition-colors duration-300">

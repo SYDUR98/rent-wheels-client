@@ -3,6 +3,7 @@ import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import { FaBookmark, FaCar, FaTrashAlt, FaTimesCircle, FaChartLine } from "react-icons/fa";
+import LoadingPage from "../../../Coponents/Shared/LoadingPage";
 
 const UserStatus = () => {
   const { user, loading: authLoading } = useAuth();
@@ -88,12 +89,7 @@ const UserStatus = () => {
   };
 
   if (authLoading || loading) {
-    return (
-      <div className="flex flex-col justify-center items-center min-h-[400px] bg-base-100 transition-colors">
-        <span className="loading loading-infinity loading-lg text-primary"></span>
-        <p className="mt-4 text-primary font-bold animate-pulse">Syncing Dashboard...</p>
-      </div>
-    );
+    return <LoadingPage></LoadingPage>
   }
 
   return (

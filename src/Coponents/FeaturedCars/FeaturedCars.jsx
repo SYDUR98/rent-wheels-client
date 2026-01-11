@@ -6,6 +6,7 @@ import useAxiosSecure from "../../hooks/useAxiosSecure"; // Match BrowseCars log
 import { toast } from "react-toastify";
 import { Tooltip } from "react-tooltip";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import LoadingPage from "../Shared/LoadingPage";
 
 const FeaturedCars = () => {
   const { user } = useContext(AuthContext);
@@ -72,7 +73,7 @@ const FeaturedCars = () => {
     }
   };
 
-  if (loading) return <LoadingSpinner />;
+  if (loading) return <LoadingPage></LoadingPage>;
 
   return (
     <div className="bg-base-100 text-base-content transition-colors duration-300 pb-16">

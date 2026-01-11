@@ -2,6 +2,7 @@ import { use, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../../provider/AuthContext";
 import LoadingSpinner from "../../Coponents/LoadingSpinner/LoadingSpinner";
+import LoadingPage from "../../Coponents/Shared/LoadingPage";
 
 const MyBookings = () => {
   const { user } = use(AuthContext);
@@ -24,7 +25,7 @@ const MyBookings = () => {
   }, [user]);
 
   if (loading) {
-    return <LoadingSpinner></LoadingSpinner>;
+    return <LoadingPage></LoadingPage>
   }
 
   return (
